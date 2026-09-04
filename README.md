@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏇 HarnessBench
+#  HarnessBench
 
 ### The First Independent Benchmarking Framework for AI Coding Agent Harnesses
 
@@ -20,7 +20,7 @@
 
 ---
 
-## 🎯 The Problem
+## The Problem
 
 Existing benchmarks (like **SWE-bench** or **HumanEval**) measure raw model intelligence. However, in real-world software development, engineers don't execute raw models—they run **agent harnesses** (such as **Claude Code**, **Aider**, **Codeless**, **OpenHands**, and custom internal CLI agents).
 
@@ -39,20 +39,20 @@ HarnessBench makes these differences **measurable, reproducible, and verifiable*
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 | Feature | Description |
 | :--- | :--- |
-| **🔍 Wire-Level Telemetry** | Intercepts HTTP/SSE traffic (`127.0.0.1:8088`) at the network layer. Never trusts harness self-reporting. |
-| **🛡️ Two-Stage Regression Guard** | Runs baseline tests *before* and *after* execution. Regressions are immediately caught and penalized. |
-| **🧹 Repo Pollution Analysis** | Deep inspection of `git status --porcelain` and diffs to penalize scratch files, debug dumps, and unrelated edits. |
-| **💰 True Cost Engine** | Real-time dollar costing using provider rate cards (accounting for input, output, cache-read, and cache-write). |
-| **📦 Disposable Git Sandboxes** | Every task run receives a fresh, isolated Git workspace. Zero cross-contamination. |
-| **📊 Rich CLI & Visual Reports** | Terminal leaderboards powered by Rich, structured JSON artifacts, and exportable Markdown reports. |
+| ** Wire-Level Telemetry** | Intercepts HTTP/SSE traffic (`127.0.0.1:8088`) at the network layer. Never trusts harness self-reporting. |
+| ** Two-Stage Regression Guard** | Runs baseline tests *before* and *after* execution. Regressions are immediately caught and penalized. |
+| ** Repo Pollution Analysis** | Deep inspection of `git status --porcelain` and diffs to penalize scratch files, debug dumps, and unrelated edits. |
+| ** True Cost Engine** | Real-time dollar costing using provider rate cards (accounting for input, output, cache-read, and cache-write). |
+| ** Disposable Git Sandboxes** | Every task run receives a fresh, isolated Git workspace. Zero cross-contamination. |
+| ** Rich CLI & Visual Reports** | Terminal leaderboards powered by Rich, structured JSON artifacts, and exportable Markdown reports. |
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 HarnessBench operates as an orchestration harness around isolated workspaces and a network proxy:
 
@@ -87,7 +87,7 @@ flowchart TD
 
 ---
 
-## 📊 Core Metrics Captured
+## Core Metrics Captured
 
 For every benchmark execution, HarnessBench captures ground-truth metrics:
 
@@ -108,7 +108,7 @@ For every benchmark execution, HarnessBench captures ground-truth metrics:
 
 ---
 
-## 🚀 Quickstart
+## Quickstart
 
 ### Prerequisites
 * **Python 3.11+**
@@ -143,7 +143,7 @@ harnessbench tasks
 
 ---
 
-## 🎮 Running the Benchmark
+## Running the Benchmark
 
 ### 1. Zero-Cost Dry Run (Mock Adapter)
 Validate the full evaluation pipeline, sandboxing, and reporting locally without an API key:
@@ -186,7 +186,7 @@ harnessbench leaderboard --report results/benchmark_report.json
 
 ---
 
-## 📡 The Network Interceptor Proxy
+## The Network Interceptor Proxy
 
 Harnesses often under-report or omit token consumption for background indexers or sub-agent queries. HarnessBench avoids this via a local reverse proxy (`bench/telemetry/proxy.py`):
 
@@ -209,7 +209,7 @@ harnessbench serve-proxy --port 8088 --host 127.0.0.1
 
 ---
 
-## 🧪 Benchmark Tasks Included
+## Benchmark Tasks Included
 
 HarnessBench ships with 3 carefully curated, deterministic benchmark challenges:
 
@@ -221,7 +221,7 @@ HarnessBench ships with 3 carefully curated, deterministic benchmark challenges:
 
 ---
 
-## 🔌 Adding a Harness Adapter
+## Adding a Harness Adapter
 
 Adding support for any coding harness requires only a small adapter subclassing `BaseHarnessAdapter`:
 
@@ -255,7 +255,7 @@ Register your adapter in `src/harnessbench/adapters/__init__.py` and it immediat
 
 ---
 
-## 🛡️ Security Model
+## Security Model
 
 - **Process Isolation:** Harnesses are spawned inside disposable temporary Git worktrees.
 - **Secret Redaction:** `scrub_secrets()` automatically redacts `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, and bearer tokens matching `sk-...` or `ant-...` from logs, stdout/stderr, and persisted JSON results.
@@ -263,7 +263,7 @@ Register your adapter in `src/harnessbench/adapters/__init__.py` and it immediat
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [x] Initial production MVP with Anthropic reverse proxy
 - [x] 3 core adapters: Claude Code, Aider, Codeless (+ Mock)
@@ -277,13 +277,13 @@ Register your adapter in `src/harnessbench/adapters/__init__.py` and it immediat
 
 ---
 
-## 📄 Documentation
+## Documentation
 
 For in-depth architectural details, mathematical metric definitions, and task authoring guidelines, see [docs/project_overview.md](docs/project_overview.md).
 
 ---
 
-## 🤝 Contributing & Community
+## Contributing & Community
 
 Contributions are warmly welcomed!
 1. Fork the repository
@@ -295,6 +295,6 @@ Contributions are warmly welcomed!
 
 ---
 
-## ⚖️ License
+## License
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
