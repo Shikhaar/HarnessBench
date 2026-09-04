@@ -1,93 +1,140 @@
-# HarnessBench 🏇
+<div align="center">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python: 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](pyproject.toml)
-[![Architecture: Clean](https://img.shields.io/badge/architecture-modular-green.svg)](src/harnessbench)
+# 🏇 HarnessBench
 
-> **HarnessBench evaluates the harness as the independent variable while controlling the model, task, repository, tests, and environment.**
+### The First Independent Benchmarking Framework for AI Coding Agent Harnesses
 
----
+[![CI Tests](https://img.shields.io/badge/tests-17%20passed-brightgreen.svg?style=for-the-badge&logo=pytest)](tests/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg?style=for-the-badge&logo=python)](pyproject.toml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/Shikhaar/HarnessBench?style=for-the-badge&color=blueviolet)](https://github.com/Shikhaar/HarnessBench)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange.svg?style=for-the-badge)](https://github.com/Shikhaar/HarnessBench/pulls)
 
-## 1. What is HarnessBench?
+<br/>
 
-**HarnessBench** is an open-source benchmarking framework designed to evaluate, compare, and rank **AI coding agent execution harnesses** (such as [Claude Code](https://claude.ai/code), [Aider](https://aider.chat), [Codeless](https://github.com), and custom agent runtimes) while holding the underlying Large Language Model (LLM) strictly constant.
+**Holding the LLM constant to measure what truly matters in production: execution harnesses.**
 
-Existing benchmarks (such as SWE-bench) evaluate raw base model intelligence. However, in real-world software engineering, success, cost, and developer experience are heavily dictated by the **execution harness**:
-- How the harness manages context and compacts token history
-- Whether it utilizes prompt caching efficiently or breaks cache prefixes on every turn
-- How tool schemas and search commands are constructed
-- Whether it pollutes the repository with untracked scratchpads, temporary debug files, or broken diffs
-- How it prevents regressions against pre-existing test suites
+[Overview](#-the-problem) • [Architecture](#-architecture) • [Metrics](#-core-metrics-captured) • [Quickstart](#-quickstart) • [Running Benchmarks](#-running-the-benchmark) • [Adding Adapters](#-adding-a-harness-adapter) • [Documentation](docs/project_overview.md)
 
-HarnessBench makes these harness-level trade-offs measurable, transparent, and reproducible.
+</div>
 
 ---
 
-## 2. Architecture Overview
+## 🎯 The Problem
+
+Existing benchmarks (like **SWE-bench** or **HumanEval**) measure raw model intelligence. However, in real-world software development, engineers don't execute raw models—they run **agent harnesses** (such as **Claude Code**, **Aider**, **Codeless**, **OpenHands**, and custom internal CLI agents).
+
+In practice, **the execution harness is 50–70% of the battle**:
+* **Cache Invalidation:** Poorly constructed harnesses break Anthropic or OpenAI prompt cache prefixes on every turn, causing API costs to skyrocket by **5x to 10x**.
+* **Context Overkill & Token Bloat:** Blindly injecting massive repository maps or entire files exhausts context windows and induces hallucinations.
+* **Repository Pollution:** Agents frequently leave behind uncommitted scratchpads, temporary markdown notes, or extraneous modified files that create technical debt.
+* **Regression Hazards:** A harness might "fix" the designated bug while silently breaking three previously passing features.
+* **Distorted Self-Reporting:** Relying on the harness to report its own token usage often hides sub-queries, internal search steps, or background indexers.
+
+### The Core Hypothesis
+
+> **Given the same LLM, repository, task, tests, and environment, different coding harnesses produce radically different outcomes in correctness, financial cost, latency, token efficiency, repository cleanliness, and regression safety.**
+
+HarnessBench makes these differences **measurable, reproducible, and verifiable**.
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
+| :--- | :--- |
+| **🔍 Wire-Level Telemetry** | Intercepts HTTP/SSE traffic (`127.0.0.1:8088`) at the network layer. Never trusts harness self-reporting. |
+| **🛡️ Two-Stage Regression Guard** | Runs baseline tests *before* and *after* execution. Regressions are immediately caught and penalized. |
+| **🧹 Repo Pollution Analysis** | Deep inspection of `git status --porcelain` and diffs to penalize scratch files, debug dumps, and unrelated edits. |
+| **💰 True Cost Engine** | Real-time dollar costing using provider rate cards (accounting for input, output, cache-read, and cache-write). |
+| **📦 Disposable Git Sandboxes** | Every task run receives a fresh, isolated Git workspace. Zero cross-contamination. |
+| **📊 Rich CLI & Visual Reports** | Terminal leaderboards powered by Rich, structured JSON artifacts, and exportable Markdown reports. |
+
+---
+
+## 🏗️ Architecture
+
+HarnessBench operates as an orchestration harness around isolated workspaces and a network proxy:
 
 ```mermaid
-graph TD
-    subgraph "HarnessBench Benchmark Orchestration"
-        A[CLI Runner: harnessbench run] --> B[Task Loader: tasks/]
-        B --> C[Workspace Sandbox Manager]
-        C -->|1. Disposable Git Worktree| D[Clean Isolated Workspace]
-        D -->|2. Baseline pytest| E[Baseline Test Status]
-        A --> F[Network Interceptor Proxy: 127.0.0.1:8088]
-        F -->|Capture Provider Tokens, Latency & Cost| G[Telemetry Collector]
-        A --> H[Harness Adapters: Claude / Aider / Codeless]
-        H -->|Execute Prompt in Sandbox| D
-        D -->|3. Post-Run pytest| I[Evaluation & Regression Engine]
-        D -->|4. git status & diff| J[Repository Pollution Analyzer]
-        I --> K[Aggregator & Leaderboard]
-        J --> K
-        G --> K
-        K --> L[results/benchmark_report.json]
-        K --> M[Rich Terminal Leaderboard]
-        K --> N[Markdown / HTML Reports]
-    end
+flowchart TD
+    CLI(["harnessbench run"]) --> TaskLoader["Load Task Specification<br/>(tasks/)"]
+    CLI --> Proxy["Network Interceptor Proxy<br/>(127.0.0.1:8088)"]
+    
+    TaskLoader --> Sandbox["Workspace Sandbox Manager"]
+    Sandbox -->|"1. Initialize disposable Git repo"| Worktree["Isolated Workspace"]
+    
+    Worktree -->|"2. Run baseline pytest"| Baseline["Baseline State Record"]
+    
+    CLI --> Adapter["Harness Adapter<br/>(Claude Code / Aider / Codeless)"]
+    Adapter -->|"3. Launch harness with ANTHROPIC_BASE_URL=proxy"| Worktree
+    
+    Worktree <-->|"4. API Traffic (SSE Stream)"| Proxy
+    Proxy -->|"Extract Tokens, Latency & Cache Reads"| Telemetry["Telemetry Recorder"]
+    
+    Worktree -->|"5. Run evaluation pytest"| PostEval["Post-Run Evaluation"]
+    Worktree -->|"6. Inspect git status & git diff"| Pollution["Pollution Analyzer"]
+    
+    Baseline --> Evaluator["Evaluation Engine"]
+    PostEval --> Evaluator
+    Pollution --> Evaluator
+    Telemetry --> Evaluator
+    
+    Evaluator --> Report["results/benchmark_report.json"]
+    Evaluator --> Leaderboard["Rich Terminal Leaderboard"]
+    Evaluator --> Markdown["results/benchmark_report.md"]
 ```
 
 ---
 
-## 3. Core Metrics Captured
+## 📊 Core Metrics Captured
 
-For every benchmark execution, HarnessBench captures:
+For every benchmark execution, HarnessBench captures ground-truth metrics:
 
-| Metric | Source | Description |
-| :--- | :--- | :--- |
-| **Pass Rate & Success** | Pytest / Sandbox | Did the agent resolve the task tests without regressions? |
-| **Regression Safety** | Baseline vs Post | Did the harness break pre-existing tests that were previously green? |
-| **Token Efficiency** | Network Proxy | Exact input, output, cache-read, and cache-write tokens at wire level. |
-| **True API Cost ($)** | Pricing Model | Calculated directly from provider rate cards (e.g. Anthropic/OpenAI). |
-| **Repo Pollution Score** | Git Status / Diff | Penalties for untracked scratch files, unexpected directories, or unrelated code mutations. |
-| **Turn Count** | Telemetry Stream | Number of interactive agent turns and LLM calls. |
-| **Execution Latency** | Wall-clock Timer | Total duration from harness launch to completion. |
+```text
+┌───────────────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────┐
+│ Metric                    │ Ground Truth Source           │ Formula / Description                                  │
+├───────────────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────┤
+│ Pass Rate & Success       │ Sandboxed Pytest Runner       │ post_tests_passed AND NOT regression_detected          │
+│ Regression Safety         │ Baseline vs Post-Run Pytest   │ baseline_passed == True AND post_passed == False       │
+│ Wire Tokens (In / Out)    │ Network Interceptor Proxy     │ Exact provider usage headers and SSE event deltas      │
+│ Prompt Cache Reads        │ Network Interceptor Proxy     │ Anthropic cache_read_input_tokens (cache savings)      │
+│ True API Cost ($)         │ Model Pricing Engine          │ (in * rate_in + out * rate_out + cache * rate_c) / 10⁶ │
+│ Repository Pollution      │ Git Status & Diff Forensics   │ Untracked files + 2*(unrelated files + unexpected dirs)│
+│ Execution Latency         │ High-resolution Timer         │ Total wall-clock time from launch to exit              │
+│ Turn Count                │ Proxy Wire Telemetry          │ Total HTTP interaction cycles                          │
+└───────────────────────────┴───────────────────────────────┴────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 4. Quickstart & Installation
+## 🚀 Quickstart
 
 ### Prerequisites
-- Python 3.11+
-- Git
+* **Python 3.11+**
+* **Git**
 
-### Installation
-
-Clone the repository and install dependencies using `uv`, `poetry`, or standard `pip`:
+### 1. Installation
 
 ```bash
-git clone https://github.com/your-org/HarnessBench.git
+# Clone the repository
+git clone https://github.com/Shikhaar/HarnessBench.git
 cd HarnessBench
 
 # Create virtual environment
 python -m venv .venv
-source .venv/bin/activate  # On Windows: .\.venv\Scripts\activate
 
-# Install in editable mode
+# Activate virtual environment
+# Windows:
+.\.venv\Scripts\activate
+# Linux / macOS:
+source .venv/bin/activate
+
+# Install in editable mode with dev dependencies
 pip install -e .
 ```
 
-Verify the installation:
+Verify your installation:
 ```bash
 harnessbench version
 harnessbench harnesses
@@ -96,34 +143,36 @@ harnessbench tasks
 
 ---
 
-## 5. Running the Benchmark
+## 🎮 Running the Benchmark
 
-### Zero-Cost Dry Run (Mock Adapter)
-Validate the entire pipeline without calling external APIs:
+### 1. Zero-Cost Dry Run (Mock Adapter)
+Validate the full evaluation pipeline, sandboxing, and reporting locally without an API key:
 ```bash
 harnessbench run --harnesses mock --tasks all --model claude-3-5-sonnet-20241022
 ```
 
-### Benchmarking Real Coding Agents
-To benchmark Claude Code, Aider, or Codeless holding `claude-3-5-sonnet-20241022` constant:
+### 2. Benchmarking Real Coding Agents
+Hold the model constant (e.g. `claude-3-5-sonnet-20241022`) to compare **Claude Code**, **Aider**, and **Codeless**:
 
 ```bash
-export ANTHROPIC_API_KEY="your-api-key"
+export ANTHROPIC_API_KEY="sk-ant-..."
 
 harnessbench run \
     --harnesses aider,claude,codeless \
     --tasks all \
     --model claude-3-5-sonnet-20241022 \
-    --timeout 300
+    --timeout 300 \
+    --output-dir results/
 ```
 
-### Viewing the Leaderboard
-View the terminal leaderboard from any previously saved report:
+### 3. Viewing the Leaderboard
+View the terminal leaderboard at any time from saved benchmark reports:
+
 ```bash
 harnessbench leaderboard --report results/benchmark_report.json
 ```
 
-Example Leaderboard output:
+**Terminal Output Preview:**
 ```text
                        HarnessBench — Coding Agent Harness Leaderboard                       
 ┌──────────┬─────────────────────────────┬───────────┬────────────┬─────────────────┬────────────┬───────┬─────────┬───────────┬─────────────┐
@@ -137,29 +186,47 @@ Example Leaderboard output:
 
 ---
 
-## 6. How the Network Interceptor Proxy Works
+## 📡 The Network Interceptor Proxy
 
-Most coding harnesses support directing network traffic through `ANTHROPIC_BASE_URL` or `OPENAI_BASE_URL`.
+Harnesses often under-report or omit token consumption for background indexers or sub-agent queries. HarnessBench avoids this via a local reverse proxy (`bench/telemetry/proxy.py`):
 
-When `harnessbench run` starts:
-1. HarnessBench spins up a lightweight async reverse proxy on `http://127.0.0.1:8088`.
-2. Harnesses are invoked with `ANTHROPIC_BASE_URL=http://127.0.0.1:8088`.
-3. The proxy intercepts every HTTP request, forwards it upstream, and intercepts the response.
-4. For Server-Sent Events (SSE) streaming responses, the proxy inspects `message_start` and `message_delta` events in real-time to extract **ground-truth provider token counts** (including cached input tokens) before streaming the bytes directly back to the agent.
-5. **No trust in self-reporting**: The proxy ensures accurate token and cost numbers regardless of whether the harness reports them.
+```text
+Harness Process  ───>  ANTHROPIC_BASE_URL (http://127.0.0.1:8088)
+                             │
+                             ├── 1. Capture request metadata & timestamp
+                             ├── 2. Forward request to https://api.anthropic.com
+                             ├── 3. Intercept Server-Sent Events (SSE) streaming chunks
+                             │      • Parse message_start (input & cache-read tokens)
+                             │      • Parse message_delta (output tokens)
+                             │      • Stream chunks in real-time back to harness
+                             └── 4. Calculate exact USD cost using model rate card
+```
 
-You can also run the proxy independently for debugging:
+You can also run the proxy standalone for manual testing:
 ```bash
-harnessbench serve-proxy --port 8088
+harnessbench serve-proxy --port 8088 --host 127.0.0.1
 ```
 
 ---
 
-## 7. Adding a New Harness Adapter
+## 🧪 Benchmark Tasks Included
 
-Implement `BaseHarnessAdapter` in `src/harnessbench/adapters/`:
+HarnessBench ships with 3 carefully curated, deterministic benchmark challenges:
+
+| Task ID | Type | Description | Expected Files |
+| :--- | :--- | :--- | :--- |
+| `python_bugfix_001` | **Algorithmic Bug** | Fixes an inverted elapsed time subtraction in a Token Bucket rate limiter refill method. | `src/rate_limiter.py` |
+| `python_refactor_001` | **Multi-file Refactor** | Extracts configuration parsing into `src/config.py` while preserving backward compatibility for `ApiClient`. | `src/config.py`, `src/client.py` |
+| `python_dependency_001` | **Dependency Compat** | Resolves `AttributeError: collections.Mapping` on Python 3.10+ by migrating to `collections.abc.Mapping`. | `src/sanitizer.py` |
+
+---
+
+## 🔌 Adding a Harness Adapter
+
+Adding support for any coding harness requires only a small adapter subclassing `BaseHarnessAdapter`:
 
 ```python
+# src/harnessbench/adapters/my_agent.py
 from pathlib import Path
 from typing import Dict
 from harnessbench.adapters.base import BaseHarnessAdapter
@@ -172,6 +239,7 @@ class MyAgentAdapter(BaseHarnessAdapter):
         return "my_agent"
 
     def setup(self, cwd: Path, env: Dict[str, str]) -> None:
+        """Workspace preparation (if needed)."""
         pass
 
     def run(self, prompt: str, cwd: Path, env: Dict[str, str], timeout: int = 300) -> HarnessExecutionResult:
@@ -179,65 +247,54 @@ class MyAgentAdapter(BaseHarnessAdapter):
         return run_command_safe(cmd, cwd=cwd, env=env, timeout=timeout)
 
     def teardown(self, cwd: Path) -> None:
+        """Post-run cleanup (if needed)."""
         pass
 ```
 
-Register your adapter in `src/harnessbench/adapters/__init__.py`.
+Register your adapter in `src/harnessbench/adapters/__init__.py` and it immediately appears in `harnessbench harnesses`.
 
 ---
 
-## 8. Adding a Benchmark Task
+## 🛡️ Security Model
 
-Each task directory in `tasks/` contains:
-
-```text
-tasks/my_custom_task/
-├── task.json                 # Metadata & expected modified files
-├── prompt.md                 # Clear instructions provided to the agent
-├── golden_solution.patch     # Reference patch
-└── workspace/                # Seed repository files
-    ├── src/
-    ├── tests/
-    │   └── test_baseline.py  # Baseline tests verifying clean initial state
-    └── test_eval.py          # Rigorous evaluation test verifying task completion
-```
-
-Example `task.json`:
-```json
-{
-  "id": "python_refactor_002",
-  "name": "Async DB Connection Pool Migration",
-  "description": "Migrate synchronous SQLite queries to connection pool with context manager.",
-  "expected_files": [
-    "src/database.py"
-  ]
-}
-```
+- **Process Isolation:** Harnesses are spawned inside disposable temporary Git worktrees.
+- **Secret Redaction:** `scrub_secrets()` automatically redacts `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, and bearer tokens matching `sk-...` or `ant-...` from logs, stdout/stderr, and persisted JSON results.
+- **No Secret Persistence:** The network proxy forwards client authorization headers upstream in-memory without writing secrets to disk.
 
 ---
 
-## 9. Security Model
+## 🗺️ Roadmap
 
-- **Subprocess Isolation**: Harnesses run inside fresh, isolated temporary Git worktrees.
-- **Secret Redaction**: API keys and auth tokens (`sk-...`, `ant-...`, etc.) are automatically scrubbed from all execution logs, stdout, stderr, and result JSON artifacts.
-- **Workspace Containment**: No harness run can modify the original repository or cross-contaminate another run.
-
----
-
-## 10. Roadmap
-
-- [x] Initial MVP with Anthropic-compatible reverse proxy
+- [x] Initial production MVP with Anthropic reverse proxy
 - [x] 3 core adapters: Claude Code, Aider, Codeless (+ Mock)
-- [x] 3 initial benchmark tasks (Bugfix, Refactor, Dependency compatibility)
-- [x] Repository pollution analyzer & regression detector
-- [x] Rich terminal leaderboard & JSON/Markdown report generators
-- [ ] OpenAI and Ollama/Local model proxy wire capture
-- [ ] Git worktree execution mode alongside disposable temp trees
-- [ ] SWE-bench Lite task suite importer
-- [ ] Automated HTML visual report dashboard
+- [x] 3 initial Python benchmark tasks
+- [x] Repository pollution forensics & regression detection
+- [x] Rich terminal leaderboard & JSON/Markdown reports
+- [ ] OpenAI and Ollama/Local model SSE proxy decoders
+- [ ] Granular JUnit XML per-test function regression diffing
+- [ ] SWE-bench Lite automated task suite importer
+- [ ] Interactive HTML web dashboard and diff viewer
 
 ---
 
-## License
+## 📄 Documentation
 
-MIT License. See [LICENSE](LICENSE) for details.
+For in-depth architectural details, mathematical metric definitions, and task authoring guidelines, see [docs/project_overview.md](docs/project_overview.md).
+
+---
+
+## 🤝 Contributing & Community
+
+Contributions are warmly welcomed!
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/new-adapter`)
+3. Run test suite: `pytest`
+4. Commit your changes (`git commit -m 'feat: add new adapter'`)
+5. Push to the branch (`git push origin feature/new-adapter`)
+6. Open a Pull Request
+
+---
+
+## ⚖️ License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
