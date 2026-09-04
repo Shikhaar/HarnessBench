@@ -1,0 +1,105 @@
+{
+  "run_id": "mock_python_dependency_001_aeaf827d",
+  "task_id": "python_dependency_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "success": false,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "turn_count": 0,
+  "duration_seconds": 1.2,
+  "files_changed": 0,
+  "lines_added": 0,
+  "lines_deleted": 0,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "pre_existing_tests_passed": false,
+  "post_tests_passed": false,
+  "regression_detected": false,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "",
+  "git_status": "",
+  "started_at": "2026-09-04T09:25:24.556587",
+  "completed_at": "2026-09-04T09:25:28.493702",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": null,
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-04T09:25:24.556587",
+        "run_id": "mock_python_dependency_001_aeaf827d",
+        "data": {
+          "task_id": "python_dependency_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022"
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-04T09:25:25.310974",
+        "run_id": "mock_python_dependency_001_aeaf827d",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-04T09:25:26.081802",
+        "run_id": "mock_python_dependency_001_aeaf827d",
+        "data": {
+          "phase": "baseline",
+          "passed": false
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-04T09:25:26.591332",
+        "run_id": "mock_python_dependency_001_aeaf827d",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-04T09:25:26.681011",
+        "run_id": "mock_python_dependency_001_aeaf827d",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-04T09:25:27.290279",
+        "run_id": "mock_python_dependency_001_aeaf827d",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-04T09:25:28.210503",
+        "run_id": "mock_python_dependency_001_aeaf827d",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": false
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-04T09:25:28.493702",
+        "run_id": "mock_python_dependency_001_aeaf827d",
+        "data": {
+          "success": false
+        }
+      }
+    ]
+  }
+}

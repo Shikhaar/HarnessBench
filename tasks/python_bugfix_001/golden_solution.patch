@@ -1,0 +1,12 @@
+diff --git a/src/rate_limiter.py b/src/rate_limiter.py
+--- a/src/rate_limiter.py
++++ b/src/rate_limiter.py
+@@ -15,7 +15,7 @@ class TokenBucket:
+     def refill(self) -> None:
+         now = time.time()
+         # BUG: Inverted elapsed calculation causes elapsed to be negative or 0
+-        elapsed = self.last_refill - now
++        elapsed = now - self.last_refill
+         if elapsed > 0:
+             added = elapsed * self.refill_rate
+             self.tokens = min(self.capacity, self.tokens + added)

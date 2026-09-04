@@ -1,0 +1,56 @@
+diff --git a/src/client.py b/src/client.py
+index b17f024..b2dc615 100644
+--- a/src/client.py
++++ b/src/client.py
+@@ -1,10 +1,31 @@
++from typing import Optional
++from src.config import ClientConfig
++
++
+ class ApiClient:
+-    """Legacy un-refactored client."""
++    def __init__(
++        self,
++        api_key: Optional[str] = None,
++        base_url: str = "https://api.example.com",
++        timeout: int = 30,
++        config: Optional[ClientConfig] = None,
++    ):
++        if config is not None:
++            self.config = config
++        else:
++            self.config = ClientConfig(api_key=api_key or "", base_url=base_url, timeout=timeout)
++
++    @property
++    def api_key(self) -> str:
++        return self.config.api_key
++
++    @property
++    def base_url(self) -> str:
++        return self.config.base_url
+ 
+-    def __init__(self, api_key: str, base_url: str = "https://api.example.com", timeout: int = 30):
+-        self.api_key = api_key
+-        self.base_url = base_url
+-        self.timeout = timeout
++    @property
++    def timeout(self) -> int:
++        return self.config.timeout
+ 
+     def get_endpoint(self, path: str) -> str:
+         return f"{self.base_url.rstrip('/')}/{path.lstrip('/')}"
+diff --git a/src/config.py b/src/config.py
+index 71718f7..e65c5b8 100644
+--- a/src/config.py
++++ b/src/config.py
+@@ -1 +1,9 @@
+-"""Configuration module stub."""
++class ClientConfig:
++    def __init__(self, api_key: str, base_url: str = "https://api.example.com", timeout: int = 30):
++        if not api_key:
++            raise ValueError("api_key cannot be empty")
++        if not (base_url.startswith("http://") or base_url.startswith("https://")):
++            raise ValueError("Invalid base_url scheme")
++        self.api_key = str(api_key)
++        self.base_url = str(base_url)
++        self.timeout = int(timeout)

@@ -1,0 +1,8 @@
+{
+  "id": "python_bugfix_001",
+  "name": "Token Bucket Rate Limiter Refill Bug",
+  "description": "Fix token bucket refill calculation where tokens fail to replenish due to inverted elapsed time subtraction.",
+  "expected_files": [
+    "src/rate_limiter.py"
+  ]
+}

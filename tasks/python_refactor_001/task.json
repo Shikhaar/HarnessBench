@@ -1,0 +1,9 @@
+{
+  "id": "python_refactor_001",
+  "name": "Extract Client Configuration",
+  "description": "Refactor ApiClient to extract configuration validation into src/config.py using ClientConfig class while preserving backward compatibility.",
+  "expected_files": [
+    "src/config.py",
+    "src/client.py"
+  ]
+}

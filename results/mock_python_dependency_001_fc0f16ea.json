@@ -1,0 +1,105 @@
+{
+  "run_id": "mock_python_dependency_001_fc0f16ea",
+  "task_id": "python_dependency_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "turn_count": 0,
+  "duration_seconds": 1.2,
+  "files_changed": 1,
+  "lines_added": 2,
+  "lines_deleted": 2,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/sanitizer.py b/src/sanitizer.py\nindex 473dcd3..2f2c243 100644\n--- a/src/sanitizer.py\n+++ b/src/sanitizer.py\n@@ -1,4 +1,4 @@\n-import collections\n+from collections.abc import Mapping\n \n \n def is_valid_key(key: str) -> bool:\n@@ -9,7 +9,7 @@ def is_valid_key(key: str) -> bool:\n def sanitize_payload(payload):\n     \"\"\"Sanitize dictionary keys, omitting private fields starting with underscore.\"\"\"\n     # BUG: collections.Mapping does not exist in Python 3.10+\n-    if isinstance(payload, collections.Mapping):\n+    if isinstance(payload, Mapping):\n         return {k: sanitize_payload(v) for k, v in payload.items() if not k.startswith(\"_\")}\n     elif isinstance(payload, list):\n         return [sanitize_payload(x) for x in payload]\n",
+  "git_status": " M src/sanitizer.py\n",
+  "started_at": "2026-09-04T09:28:30.820947",
+  "completed_at": "2026-09-04T09:28:34.543020",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": null,
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-04T09:28:30.820947",
+        "run_id": "mock_python_dependency_001_fc0f16ea",
+        "data": {
+          "task_id": "python_dependency_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022"
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-04T09:28:31.605508",
+        "run_id": "mock_python_dependency_001_fc0f16ea",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-04T09:28:32.272538",
+        "run_id": "mock_python_dependency_001_fc0f16ea",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-04T09:28:32.805933",
+        "run_id": "mock_python_dependency_001_fc0f16ea",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-04T09:28:32.906537",
+        "run_id": "mock_python_dependency_001_fc0f16ea",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-04T09:28:33.437739",
+        "run_id": "mock_python_dependency_001_fc0f16ea",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-04T09:28:34.240325",
+        "run_id": "mock_python_dependency_001_fc0f16ea",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-04T09:28:34.543020",
+        "run_id": "mock_python_dependency_001_fc0f16ea",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}

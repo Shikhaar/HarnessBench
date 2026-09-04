@@ -1,0 +1,105 @@
+{
+  "run_id": "mock_python_refactor_001_787336cc",
+  "task_id": "python_refactor_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "turn_count": 0,
+  "duration_seconds": 1.2,
+  "files_changed": 2,
+  "lines_added": 35,
+  "lines_deleted": 6,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/client.py b/src/client.py\nindex b17f024..b2dc615 100644\n--- a/src/client.py\n+++ b/src/client.py\n@@ -1,10 +1,31 @@\n+from typing import Optional\n+from src.config import ClientConfig\n+\n+\n class ApiClient:\n-    \"\"\"Legacy un-refactored client.\"\"\"\n+    def __init__(\n+        self,\n+        api_key: Optional[str] = None,\n+        base_url: str = \"https://api.example.com\",\n+        timeout: int = 30,\n+        config: Optional[ClientConfig] = None,\n+    ):\n+        if config is not None:\n+            self.config = config\n+        else:\n+            self.config = ClientConfig(api_key=api_key or \"\", base_url=base_url, timeout=timeout)\n+\n+    @property\n+    def api_key(self) -> str:\n+        return self.config.api_key\n+\n+    @property\n+    def base_url(self) -> str:\n+        return self.config.base_url\n \n-    def __init__(self, api_key: str, base_url: str = \"https://api.example.com\", timeout: int = 30):\n-        self.api_key = api_key\n-        self.base_url = base_url\n-        self.timeout = timeout\n+    @property\n+    def timeout(self) -> int:\n+        return self.config.timeout\n \n     def get_endpoint(self, path: str) -> str:\n         return f\"{self.base_url.rstrip('/')}/{path.lstrip('/')}\"\ndiff --git a/src/config.py b/src/config.py\nindex 71718f7..e65c5b8 100644\n--- a/src/config.py\n+++ b/src/config.py\n@@ -1 +1,9 @@\n-\"\"\"Configuration module stub.\"\"\"\n+class ClientConfig:\n+    def __init__(self, api_key: str, base_url: str = \"https://api.example.com\", timeout: int = 30):\n+        if not api_key:\n+            raise ValueError(\"api_key cannot be empty\")\n+        if not (base_url.startswith(\"http://\") or base_url.startswith(\"https://\")):\n+            raise ValueError(\"Invalid base_url scheme\")\n+        self.api_key = str(api_key)\n+        self.base_url = str(base_url)\n+        self.timeout = int(timeout)\n",
+  "git_status": " M src/client.py\n M src/config.py\n",
+  "started_at": "2026-09-04T09:25:28.632173",
+  "completed_at": "2026-09-04T09:25:32.508944",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": null,
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-04T09:25:28.632712",
+        "run_id": "mock_python_refactor_001_787336cc",
+        "data": {
+          "task_id": "python_refactor_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022"
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-04T09:25:29.422685",
+        "run_id": "mock_python_refactor_001_787336cc",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-04T09:25:30.228370",
+        "run_id": "mock_python_refactor_001_787336cc",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-04T09:25:30.749897",
+        "run_id": "mock_python_refactor_001_787336cc",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-04T09:25:30.859819",
+        "run_id": "mock_python_refactor_001_787336cc",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-04T09:25:31.380866",
+        "run_id": "mock_python_refactor_001_787336cc",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-04T09:25:32.216641",
+        "run_id": "mock_python_refactor_001_787336cc",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-04T09:25:32.508944",
+        "run_id": "mock_python_refactor_001_787336cc",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}
