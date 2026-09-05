@@ -1,0 +1,51 @@
+{
+  "timestamp": "2026-09-05T05:25:49.538812",
+  "model": "claude-3-5-sonnet-20241022",
+  "summary": {
+    "mock": {
+      "total_runs": 12,
+      "tasks_passed": 12,
+      "pass_rate": 1.0,
+      "pass_rate_stddev": 0.0,
+      "total_cost_usd": 0.0,
+      "cost_mean_usd": 0.0,
+      "cost_per_successful_task": 0.0,
+      "total_input_tokens": 0,
+      "total_output_tokens": 0,
+      "total_cache_read_tokens": 0,
+      "total_tokens": 0,
+      "tokens_mean": 0,
+      "tokens_per_successful_task": 0,
+      "latency_median_seconds": 1.2,
+      "latency_mean_seconds": 1.2,
+      "total_pollution_score": 0,
+      "pollution_score_mean": 0,
+      "total_regressions": 0,
+      "regression_rate": 0.0,
+      "category_breakdown": {
+        "concurrency": 1.0,
+        "error_handling": 1.0,
+        "performance": 1.0,
+        "build_systems": 1.0,
+        "architecture": 1.0,
+        "refactoring": 1.0,
+        "bug_fixing": 1.0,
+        "api": 1.0,
+        "dependencies": 1.0
+      },
+      "language_breakdown": {
+        "go": 1.0,
+        "java": 1.0,
+        "python": 1.0,
+        "typescript": 1.0
+      }
+    }
+  },
+  "awards": {
+    "Highest Success Rate": "mock",
+    "Most Cost Efficient": "mock",
+    "Fastest Latency": "mock",
+    "Cleanest Repository": "mock",
+    "Lowest Regression Rate": "mock"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "run_id": "mock_typescript_refactor_001_rep1_86a7ca",
+  "task_id": "typescript_refactor_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "typescript",
+  "category": "refactoring",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 2,
+  "lines_added": 19,
+  "lines_deleted": 4,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 2,
+    "lines_added": 19,
+    "lines_deleted": 4,
+    "diff_size": 995,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/dispatcher.js b/src/dispatcher.js\nindex 33410bb..9ba4f1e 100644\n--- a/src/dispatcher.js\n+++ b/src/dispatcher.js\n@@ -1,11 +1,12 @@\n+const { executeWithRetry } = require('./retry');\n+\n class Dispatcher {\n   constructor(options = {}) {\n     this.options = options;\n   }\n \n   async dispatch(fn) {\n-    // Un-refactored direct call\n-    return await fn();\n+    return await executeWithRetry(fn, this.options);\n   }\n }\n \ndiff --git a/src/retry.js b/src/retry.js\nindex 182d1f2..e36c908 100644\n--- a/src/retry.js\n+++ b/src/retry.js\n@@ -1,2 +1,16 @@\n-// Retry module stub\n-module.exports = {};\n+async function executeWithRetry(fn, { maxRetries = 3, delayMs = 10 } = {}) {\n+  let lastError;\n+  for (let i = 0; i < maxRetries; i++) {\n+    try {\n+      return await fn();\n+    } catch (err) {\n+      lastError = err;\n+      if (delayMs > 0) {\n+        await new Promise(res => setTimeout(res, delayMs));\n+      }\n+    }\n+  }\n+  throw lastError;\n+}\n+\n+module.exports = { executeWithRetry };\n",
+  "git_status": " M src/dispatcher.js\n M src/retry.js\n",
+  "started_at": "2026-09-05T05:23:43.816251",
+  "completed_at": "2026-09-05T05:23:50.106990",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "a6fcdb9426810696839cb2256544fa733b9ea5f6",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T05:23:43.816251",
+        "run_id": "mock_typescript_refactor_001_rep1_86a7ca",
+        "data": {
+          "task_id": "typescript_refactor_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T05:23:45.540075",
+        "run_id": "mock_typescript_refactor_001_rep1_86a7ca",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T05:23:45.810919",
+        "run_id": "mock_typescript_refactor_001_rep1_86a7ca",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T05:23:46.992438",
+        "run_id": "mock_typescript_refactor_001_rep1_86a7ca",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T05:23:47.233831",
+        "run_id": "mock_typescript_refactor_001_rep1_86a7ca",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T05:23:48.336951",
+        "run_id": "mock_typescript_refactor_001_rep1_86a7ca",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T05:23:49.458146",
+        "run_id": "mock_typescript_refactor_001_rep1_86a7ca",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T05:23:50.106990",
+        "run_id": "mock_typescript_refactor_001_rep1_86a7ca",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}

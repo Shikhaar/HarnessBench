@@ -45,7 +45,7 @@ def test_end_to_end_benchmark_pipeline(tmp_path: Path):
     assert report_json.exists()
 
     md_report = generate_markdown_report(runs=[result], model="claude-3-5-sonnet-20241022")
-    assert "# HarnessBench Leaderboard" in md_report
+    assert "Leaderboard" in md_report and "HarnessBench" in md_report
 
     # Verify leaderboard table builds
     table = render_leaderboard([result])

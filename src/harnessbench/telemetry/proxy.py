@@ -1,11 +1,10 @@
-"""FastAPI & httpx network interception proxy for ground-truth API telemetry."""
+"""FastAPI & httpx network interception proxy supporting Anthropic and OpenAI wire traffic."""
 
 import asyncio
 import json
 import os
 import threading
 import time
-from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Any, AsyncIterator, Dict, List, Optional
 
@@ -20,9 +19,12 @@ from harnessbench.telemetry.tokens import (
     TokenRecord,
     parse_anthropic_json_usage,
     parse_anthropic_sse_event,
+    parse_openai_json_usage,
+    parse_openai_sse_event,
 )
 
 DEFAULT_UPSTREAM_ANTHROPIC = "https://api.anthropic.com"
+DEFAULT_UPSTREAM_OPENAI = "https://api.openai.com"
 
 
 class ProxySession:
@@ -34,12 +36,21 @@ class ProxySession:
         self.harness = harness
         self.model = model
         self.is_active = True
+        self.created_at = time.perf_counter()
+        self.time_to_first_request: Optional[float] = None
         self.records: List[TokenRecord] = []
         self.summary = ApiUsageSummary()
+        self.api_errors: int = 0
 
     def add_record(self, record: TokenRecord) -> None:
+        if self.time_to_first_request is None:
+            self.time_to_first_request = round(time.perf_counter() - self.created_at, 3)
+
         if not record.model and self.model:
             record.model = self.model
+        if record.status_code >= 400:
+            self.api_errors += 1
+
         self.records.append(record)
         self.summary.add(record)
 
@@ -59,7 +70,8 @@ class ProxySession:
 # Global proxy state
 _active_session: Optional[ProxySession] = None
 _session_lock = threading.Lock()
-_upstream_base_url = os.environ.get("HARNESSBENCH_UPSTREAM_URL", DEFAULT_UPSTREAM_ANTHROPIC)
+_upstream_anthropic = os.environ.get("HARNESSBENCH_ANTHROPIC_URL", DEFAULT_UPSTREAM_ANTHROPIC)
+_upstream_openai = os.environ.get("HARNESSBENCH_OPENAI_URL", DEFAULT_UPSTREAM_OPENAI)
 
 
 def get_current_session() -> Optional[ProxySession]:
@@ -73,9 +85,13 @@ def set_current_session(session: Optional[ProxySession]) -> None:
         _active_session = session
 
 
-def set_upstream_base_url(url: str) -> None:
-    global _upstream_base_url
-    _upstream_base_url = url.rstrip("/")
+def set_upstream_base_url(url: str, provider: str = "anthropic") -> None:
+    global _upstream_anthropic, _upstream_openai
+    cleaned = url.rstrip("/")
+    if provider == "openai":
+        _upstream_openai = cleaned
+    else:
+        _upstream_anthropic = cleaned
 
 
 app = FastAPI(title="HarnessBench Network Interceptor Proxy")
@@ -108,6 +124,8 @@ async def stop_session():
         "cache_read_tokens": session.summary.cache_read_tokens,
         "total_tokens": session.summary.total_tokens,
         "cost_usd": session.get_cost_usd(),
+        "time_to_first_request": session.time_to_first_request,
+        "api_errors": session.api_errors,
     }
 
 
@@ -125,17 +143,22 @@ async def get_session_summary():
         "cache_read_tokens": session.summary.cache_read_tokens,
         "total_tokens": session.summary.total_tokens,
         "cost_usd": session.get_cost_usd(),
+        "time_to_first_request": session.time_to_first_request,
+        "api_errors": session.api_errors,
     }
 
 
 # Forwarding & Interception route
 @app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"])
 async def intercept_traffic(request: Request, path: str):
-    # Ignore proxy internal control endpoints
     if path.startswith("proxy/"):
         return JSONResponse(status_code=404, content={"detail": "Not found"})
 
-    target_url = f"{_upstream_base_url}/{path}"
+    # Determine provider route
+    is_openai = "chat/completions" in path or "completions" in path or "embeddings" in path
+    base_url = _upstream_openai if is_openai else _upstream_anthropic
+    target_url = f"{base_url}/{path}"
+
     headers = dict(request.headers)
     headers.pop("host", None)
     headers.pop("content-length", None)
@@ -152,7 +175,7 @@ async def intercept_traffic(request: Request, path: str):
 
     start_time = time.perf_counter()
 
-    # Make upstream request
+    # Forward upstream
     client = httpx.AsyncClient(timeout=120.0)
     try:
         req = client.build_request(
@@ -165,6 +188,9 @@ async def intercept_traffic(request: Request, path: str):
         upstream_resp = await client.send(req, stream=True)
     except Exception as e:
         await client.aclose()
+        session = get_current_session()
+        if session and session.is_active:
+            session.api_errors += 1
         return JSONResponse(status_code=502, content={"error": f"Upstream proxy failed: {str(e)}"})
 
     content_type = upstream_resp.headers.get("content-type", "")
@@ -187,7 +213,11 @@ async def intercept_traffic(request: Request, path: str):
                     if line_str.startswith("event:"):
                         current_event = line_str[len("event:"):].strip()
                     elif line_str.startswith("data:"):
-                        delta = parse_anthropic_sse_event(current_event, line_str)
+                        if is_openai:
+                            delta = parse_openai_sse_event(line_str)
+                        else:
+                            delta = parse_anthropic_sse_event(current_event, line_str)
+
                         if delta:
                             if delta.get("model"):
                                 current_model = delta["model"]
@@ -201,13 +231,15 @@ async def intercept_traffic(request: Request, path: str):
                 latency = time.perf_counter() - start_time
                 session = get_current_session()
                 if session and session.is_active:
+                    has_usage = (input_tokens > 0 or output_tokens > 0)
                     record = TokenRecord(
                         model=current_model or requested_model,
+                        provider="openai" if is_openai else "anthropic",
                         input_tokens=input_tokens,
                         output_tokens=output_tokens,
                         cache_read_tokens=cache_read_tokens,
                         cache_write_tokens=cache_write_tokens,
-                        provider_reported=(input_tokens > 0 or output_tokens > 0),
+                        provider_reported=has_usage,
                         status_code=upstream_resp.status_code,
                         latency_seconds=latency,
                     )
@@ -231,10 +263,13 @@ async def intercept_traffic(request: Request, path: str):
 
     latency = time.perf_counter() - start_time
 
-    # Attempt to parse provider token usage
     try:
         resp_json = json.loads(content.decode("utf-8"))
-        record = parse_anthropic_json_usage(resp_json)
+        if is_openai:
+            record = parse_openai_json_usage(resp_json)
+        else:
+            record = parse_anthropic_json_usage(resp_json)
+
         if not record.model and requested_model:
             record.model = requested_model
         record.status_code = upstream_resp.status_code
@@ -277,8 +312,6 @@ class ProxyServer:
 
         self.thread = threading.Thread(target=self.server.run, daemon=True)
         self.thread.start()
-
-        # Wait briefly for proxy to bind
         time.sleep(0.5)
 
     def stop(self) -> None:

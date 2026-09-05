@@ -1,0 +1,38 @@
+diff --git a/src/buffer.go b/src/buffer.go
+index db8a51a..0442cc9 100644
+--- a/src/buffer.go
++++ b/src/buffer.go
+@@ -1,26 +1,23 @@
+ package buffer
+ 
++import "bytes"
++
+ type StreamAccumulator struct {
+-	// BUG: Naive slice reallocation creates excessive memory thrash
+-	data []byte
++	buf bytes.Buffer
+ }
+ 
+ func NewStreamAccumulator() *StreamAccumulator {
+-	return &StreamAccumulator{
+-		data: make([]byte, 0),
+-	}
++	return &StreamAccumulator{}
+ }
+ 
+ func (s *StreamAccumulator) Write(chunk []byte) (int, error) {
+-	s.data = append(s.data, chunk...)
+-	return len(chunk), nil
++	return s.buf.Write(chunk)
+ }
+ 
+ func (s *StreamAccumulator) Bytes() []byte {
+-	return s.data
++	return s.buf.Bytes()
+ }
+ 
+ func (s *StreamAccumulator) Reset() {
+-	// Re-allocates every time
+-	s.data = make([]byte, 0)
++	s.buf.Reset()
+ }

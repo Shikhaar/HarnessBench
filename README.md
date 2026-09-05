@@ -4,7 +4,8 @@
 
 ### The First Independent Benchmarking Framework for AI Coding Agent Harnesses
 
-[![CI Tests](https://img.shields.io/badge/tests-17%20passed-brightgreen.svg?style=for-the-badge&logo=pytest)](tests/)
+[![CI Tests](https://img.shields.io/badge/tests-21%20passed-brightgreen.svg?style=for-the-badge&logo=pytest)](tests/)
+[![Tasks](https://img.shields.io/badge/tasks-12%20validated-blueviolet.svg?style=for-the-badge)](tasks/)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg?style=for-the-badge&logo=python)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/Shikhaar/HarnessBench?style=for-the-badge&color=blueviolet)](https://github.com/Shikhaar/HarnessBench)
@@ -12,9 +13,9 @@
 
 <br/>
 
-**Holding the LLM constant to measure what truly matters in production: execution harnesses.**
+**Holding the LLM constant to measure what truly matters in production: execution harnesses across Python, TypeScript, Go, and Java.**
 
-[Overview](#-the-problem) • [Architecture](#-architecture) • [Metrics](#-core-metrics-captured) • [Quickstart](#-quickstart) • [Running Benchmarks](#-running-the-benchmark) • [Adding Adapters](#-adding-a-harness-adapter) • [Documentation](docs/project_overview.md)
+[Overview](#-the-problem) • [Architecture](#-architecture) • [Metrics](#-core-metrics-captured) • [Task Suite](#-12-task-cross-language-suite) • [Quickstart](#-quickstart) • [Running Benchmarks](#-running-the-benchmark) • [Adding Adapters](#-adding-a-harness-adapter) • [Leaderboard](LEADERBOARD.md)
 
 </div>
 

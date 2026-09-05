@@ -1,0 +1,125 @@
+{
+  "run_id": "mock_java_dependency_001_rep1_d49886",
+  "task_id": "java_dependency_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "java",
+  "category": "build_systems",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 1,
+  "lines_added": 6,
+  "lines_deleted": 0,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 1,
+    "lines_added": 6,
+    "lines_deleted": 0,
+    "diff_size": 530,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/pom.xml b/pom.xml\nindex c6244cf..390e67c 100644\n--- a/pom.xml\n+++ b/pom.xml\n@@ -15,6 +15,12 @@\n             <groupId>com.example.legacy</groupId>\n             <artifactId>legacy-connector</artifactId>\n             <version>2.1.0</version>\n+            <exclusions>\n+                <exclusion>\n+                    <groupId>org.slf4j</groupId>\n+                    <artifactId>slf4j-log4j12</artifactId>\n+                </exclusion>\n+            </exclusions>\n         </dependency>\n     </dependencies>\n </project>\n",
+  "git_status": " M pom.xml\n",
+  "started_at": "2026-09-05T05:22:44.184551",
+  "completed_at": "2026-09-05T05:22:50.684280",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "a6fcdb9426810696839cb2256544fa733b9ea5f6",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T05:22:44.184551",
+        "run_id": "mock_java_dependency_001_rep1_d49886",
+        "data": {
+          "task_id": "java_dependency_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T05:22:46.248493",
+        "run_id": "mock_java_dependency_001_rep1_d49886",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T05:22:46.500323",
+        "run_id": "mock_java_dependency_001_rep1_d49886",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T05:22:47.601063",
+        "run_id": "mock_java_dependency_001_rep1_d49886",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T05:22:47.820426",
+        "run_id": "mock_java_dependency_001_rep1_d49886",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T05:22:48.911494",
+        "run_id": "mock_java_dependency_001_rep1_d49886",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T05:22:50.082736",
+        "run_id": "mock_java_dependency_001_rep1_d49886",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T05:22:50.684280",
+        "run_id": "mock_java_dependency_001_rep1_d49886",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}

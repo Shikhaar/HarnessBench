@@ -1,4 +1,4 @@
-"""Benchmark runner orchestrating sandboxes, adapters, proxies, and evaluation."""
+"""Benchmark runner orchestrating cross-language sandboxes, adapters, proxies, and evaluation."""
 
 import json
 import os
@@ -46,23 +46,31 @@ class BenchmarkRunner:
         task: BenchmarkTask,
         adapter: BaseHarnessAdapter,
         model: str = "claude-3-5-sonnet-20241022",
+        repetition_index: int = 1,
         proxy_url: Optional[str] = None,
-        timeout: int = 300,
+        timeout: Optional[int] = None,
         output_dir: Optional[Path] = None,
     ):
         self.task = task
         self.adapter = adapter
         self.model = model
+        self.repetition_index = repetition_index
         self.proxy_url = proxy_url
-        self.timeout = timeout
+        self.timeout = timeout or task.timeout_seconds
         self.output_dir = output_dir or Path("results")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def run(self) -> RunResult:
-        run_id = f"{self.adapter.name}_{self.task.id}_{uuid.uuid4().hex[:8]}"
+        run_id = f"{self.adapter.name}_{self.task.id}_rep{self.repetition_index}_{uuid.uuid4().hex[:6]}"
         events = EventRecorder(run_id=run_id)
         started_at = datetime.utcnow()
-        events.record(TelemetryEventType.RUN_STARTED, task_id=self.task.id, harness=self.adapter.name, model=self.model)
+        events.record(
+            TelemetryEventType.RUN_STARTED,
+            task_id=self.task.id,
+            harness=self.adapter.name,
+            model=self.model,
+            repetition=self.repetition_index,
+        )
 
         template_dir = Path(self.task.repository) if self.task.repository else None
         sandbox = SandboxWorkspace(
@@ -72,11 +80,12 @@ class BenchmarkRunner:
         )
 
         with sandbox:
-            # 1. Baseline tests
+            # 1. Baseline tests in clean repository
             events.record(TelemetryEventType.TESTS_STARTED, phase="baseline")
             baseline_passed, baseline_code, b_stdout, b_stderr, _ = execute_test_command(
                 command=self.task.baseline_command,
                 cwd=sandbox.path,
+                timeout=self.timeout,
             )
             events.record(TelemetryEventType.TESTS_FINISHED, phase="baseline", passed=baseline_passed)
 
@@ -101,9 +110,9 @@ class BenchmarkRunner:
                 "HARNESSBENCH_RUN_ID": run_id,
                 "HARNESSBENCH_TASK_ID": self.task.id,
                 "HARNESSBENCH_MODEL": self.model,
+                "HARNESSBENCH_LANGUAGE": self.task.language,
             }
             if self.proxy_url:
-                # Direct Anthropic traffic to local interceptor proxy
                 env["ANTHROPIC_BASE_URL"] = self.proxy_url
                 env["OPENAI_BASE_URL"] = self.proxy_url
 
@@ -136,7 +145,9 @@ class BenchmarkRunner:
             cache_read_tokens = 0
             total_tokens = 0
             cost_usd = 0.0
-            turn_count = 0
+            turn_count: Optional[int] = None
+            time_to_first_req: Optional[float] = None
+            api_errors = 0
 
             if self.proxy_url:
                 try:
@@ -148,11 +159,13 @@ class BenchmarkRunner:
                         cache_read_tokens = pdata.get("cache_read_tokens", 0)
                         total_tokens = pdata.get("total_tokens", 0)
                         cost_usd = pdata.get("cost_usd", 0.0)
-                        turn_count = pdata.get("total_requests", 0)
+                        raw_turns = pdata.get("total_requests", 0)
+                        turn_count = raw_turns if raw_turns > 0 else None
+                        time_to_first_req = pdata.get("time_to_first_request")
+                        api_errors = pdata.get("api_errors", 0)
                 except Exception:
                     pass
 
-            # If proxy wasn't recording or 0, calculate cost directly from tokens
             if cost_usd == 0.0 and (input_tokens > 0 or output_tokens > 0):
                 cost_usd = calculate_api_cost(
                     model=self.model,
@@ -161,7 +174,7 @@ class BenchmarkRunner:
                     cache_read_tokens=cache_read_tokens,
                 )
 
-            # 7. Evaluate task completion & repo pollution
+            # 7. Evaluate task completion, regressions, repo pollution, patch quality
             events.record(TelemetryEventType.TESTS_STARTED, phase="post_evaluation")
             eval_outcome = evaluate_task_run(
                 task=self.task,
@@ -169,7 +182,11 @@ class BenchmarkRunner:
                 baseline_passed=baseline_passed,
                 baseline_exit_code=baseline_code,
             )
-            events.record(TelemetryEventType.TESTS_FINISHED, phase="post_evaluation", passed=eval_outcome.post_tests_passed)
+            events.record(
+                TelemetryEventType.TESTS_FINISHED,
+                phase="post_evaluation",
+                passed=eval_outcome.post_tests_passed,
+            )
 
             # 8. Git statistics
             files_changed, lines_added, lines_deleted = sandbox.get_diff_stat()
@@ -179,11 +196,16 @@ class BenchmarkRunner:
             completed_at = datetime.utcnow()
             events.record(TelemetryEventType.RUN_FINISHED, success=eval_outcome.success)
 
+            is_timeout = (harness_exec.exit_code == -1 or "timed out" in harness_exec.stderr.lower())
+
             result = RunResult(
                 run_id=run_id,
                 task_id=self.task.id,
                 harness=self.adapter.name,
                 model=self.model,
+                language=self.task.language,
+                category=self.task.category,
+                repetition_index=self.repetition_index,
                 success=eval_outcome.success,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
@@ -192,14 +214,20 @@ class BenchmarkRunner:
                 cost_usd=cost_usd,
                 turn_count=turn_count,
                 duration_seconds=harness_exec.duration,
+                time_to_first_api_request=time_to_first_req,
                 files_changed=files_changed,
                 lines_added=lines_added,
                 lines_deleted=lines_deleted,
                 unexpected_files=eval_outcome.pollution_report.unexpected_files,
                 pollution_score=eval_outcome.pollution_report.pollution_score,
+                patch_quality=eval_outcome.patch_quality,
                 pre_existing_tests_passed=eval_outcome.pre_existing_tests_passed,
                 post_tests_passed=eval_outcome.post_tests_passed,
                 regression_detected=eval_outcome.regression_detected,
+                timeout=is_timeout,
+                harness_exit_code=harness_exec.exit_code,
+                evaluation_exit_code=eval_outcome.evaluation_exit_code,
+                api_errors=api_errors,
                 stdout=harness_exec.stdout,
                 stderr=harness_exec.stderr,
                 git_diff=git_diff,

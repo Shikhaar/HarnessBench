@@ -1,0 +1,14 @@
+id: java_multi_module_001
+name: Cross-Module DTO Contract Synchronization
+language: java
+category: architecture
+difficulty: medium
+description: Synchronize renamed DTO field contract between payment-api module and order-service client caller.
+repository: workspace
+evaluation:
+  command: python run_eval.py
+baseline:
+  command: python run_baseline.py
+expected_files:
+  - order-service/src/OrderService.java
+timeout_seconds: 60

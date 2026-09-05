@@ -1,0 +1,15 @@
+id: typescript_refactor_001
+name: Extract Retry Policy from HTTP Dispatcher
+language: typescript
+category: refactoring
+difficulty: medium
+description: Refactor monolithic HTTP dispatcher to extract reusable exponential backoff retry strategy into src/retry.js.
+repository: workspace
+evaluation:
+  command: node test_eval.js
+baseline:
+  command: node tests/test_baseline.js
+expected_files:
+  - src/retry.js
+  - src/dispatcher.js
+timeout_seconds: 60

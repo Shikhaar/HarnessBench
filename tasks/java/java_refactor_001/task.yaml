@@ -1,0 +1,14 @@
+id: java_refactor_001
+name: Implement Builder Pattern for UserAccount Entity
+language: java
+category: refactoring
+difficulty: medium
+description: Refactor telescoping constructor in UserAccount entity to a fluent Builder pattern with validation.
+repository: workspace
+evaluation:
+  command: python run_eval.py
+baseline:
+  command: python run_baseline.py
+expected_files:
+  - src/UserAccount.java
+timeout_seconds: 60

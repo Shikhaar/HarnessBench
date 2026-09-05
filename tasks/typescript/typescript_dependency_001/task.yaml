@@ -1,0 +1,14 @@
+id: typescript_dependency_001
+name: Robust Environment Configuration Parsing
+language: typescript
+category: dependencies
+difficulty: easy
+description: Implement resilient configuration parser that cleans JSON comments, handles trailing commas, and provides defaults without crashing.
+repository: workspace
+evaluation:
+  command: node test_eval.js
+baseline:
+  command: node tests/test_baseline.js
+expected_files:
+  - src/env_loader.js
+timeout_seconds: 60

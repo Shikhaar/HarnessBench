@@ -1,0 +1,21 @@
+diff --git a/src/serializer.js b/src/serializer.js
+index 83e52ce..f1e20c4 100644
+--- a/src/serializer.js
++++ b/src/serializer.js
+@@ -3,11 +3,14 @@ function snakeToCamel(str) {
+ }
+ 
+ function serializeApiResponse(data) {
+-  // BUG: Fails on null or arrays
+-  if (typeof data !== 'object') {
++  if (data === null || typeof data !== 'object') {
+     return data;
+   }
+ 
++  if (Array.isArray(data)) {
++    return data.map(item => serializeApiResponse(item));
++  }
++
+   const result = {};
+   for (const [key, value] of Object.entries(data)) {
+     const camelKey = snakeToCamel(key);

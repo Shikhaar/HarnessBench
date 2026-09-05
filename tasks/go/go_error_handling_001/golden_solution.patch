@@ -1,0 +1,35 @@
+diff --git a/src/errors.go b/src/errors.go
+index d48618c..7674951 100644
+--- a/src/errors.go
++++ b/src/errors.go
+@@ -1,13 +1,28 @@
+ package apierr
+ 
+-import "fmt"
++import (
++	"errors"
++	"fmt"
++)
++
++var (
++	ErrNotFound     = errors.New("resource not found")
++	ErrUnauthorized = errors.New("unauthorized")
++)
+ 
+-// BUG: Simple string error without Unwrap or sentinel variables
+ type ApiError struct {
+ 	Code    int
+ 	Message string
++	Err     error
+ }
+ 
+ func (e *ApiError) Error() string {
++	if e.Err != nil {
++		return fmt.Sprintf("[%d] %s: %v", e.Code, e.Message, e.Err)
++	}
+ 	return fmt.Sprintf("[%d] %s", e.Code, e.Message)
+ }
++
++func (e *ApiError) Unwrap() error {
++	return e.Err
++}

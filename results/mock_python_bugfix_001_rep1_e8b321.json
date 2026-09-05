@@ -1,0 +1,125 @@
+{
+  "run_id": "mock_python_bugfix_001_rep1_e8b321",
+  "task_id": "python_bugfix_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "python",
+  "category": "bug_fixing",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 1,
+  "lines_added": 1,
+  "lines_deleted": 1,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 1,
+    "lines_added": 1,
+    "lines_deleted": 1,
+    "diff_size": 536,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/rate_limiter.py b/src/rate_limiter.py\nindex 7a35838..c184c4d 100644\n--- a/src/rate_limiter.py\n+++ b/src/rate_limiter.py\n@@ -15,7 +15,7 @@ class TokenBucket:\n     def refill(self) -> None:\n         now = time.time()\n         # BUG: Inverted elapsed calculation causes elapsed to be negative or 0\n-        elapsed = self.last_refill - now\n+        elapsed = now - self.last_refill\n         if elapsed > 0:\n             added = elapsed * self.refill_rate\n             self.tokens = min(self.capacity, self.tokens + added)\n",
+  "git_status": " M src/rate_limiter.py\n",
+  "started_at": "2026-09-05T05:23:13.197042",
+  "completed_at": "2026-09-05T05:23:21.771233",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "a6fcdb9426810696839cb2256544fa733b9ea5f6",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T05:23:13.197042",
+        "run_id": "mock_python_bugfix_001_rep1_e8b321",
+        "data": {
+          "task_id": "python_bugfix_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T05:23:14.959621",
+        "run_id": "mock_python_bugfix_001_rep1_e8b321",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T05:23:16.354108",
+        "run_id": "mock_python_bugfix_001_rep1_e8b321",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T05:23:17.535824",
+        "run_id": "mock_python_bugfix_001_rep1_e8b321",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T05:23:17.746759",
+        "run_id": "mock_python_bugfix_001_rep1_e8b321",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T05:23:18.911915",
+        "run_id": "mock_python_bugfix_001_rep1_e8b321",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T05:23:21.136392",
+        "run_id": "mock_python_bugfix_001_rep1_e8b321",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T05:23:21.771233",
+        "run_id": "mock_python_bugfix_001_rep1_e8b321",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}

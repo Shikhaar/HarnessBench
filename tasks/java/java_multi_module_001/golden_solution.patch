@@ -1,0 +1,9 @@
+diff --git a/order-service/src/OrderService.java b/order-service/src/OrderService.java
+--- a/order-service/src/OrderService.java
++++ b/order-service/src/OrderService.java
+@@ -6,4 +6,3 @@ public class OrderService {
+         PaymentRequest req = new PaymentRequest(orderId, amount, token);
+-        // BUG: Calling obsolete method getPaymentToken()
+-        String t = req.getPaymentToken();
++        String t = req.getToken();
+         return t != null && !t.isEmpty();

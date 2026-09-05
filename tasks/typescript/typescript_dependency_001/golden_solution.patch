@@ -1,0 +1,24 @@
+diff --git a/src/env_loader.js b/src/env_loader.js
+index 03d437f..85edee5 100644
+--- a/src/env_loader.js
++++ b/src/env_loader.js
+@@ -1,7 +1,16 @@
+ function loadConfig(jsonString) {
+-  // BUG: Direct JSON.parse fails on trailing commas or comments
+-  const parsed = JSON.parse(jsonString);
+-  return parsed;
++  try {
++    let clean = jsonString.replace(/\/\/.*$/gm, '');
++    clean = clean.replace(/,(\s*[}\]])/g, '$1');
++    const parsed = JSON.parse(clean);
++    return {
++      port: 3000,
++      debug: false,
++      ...parsed,
++    };
++  } catch (err) {
++    return { port: 3000, debug: false };
++  }
+ }
+ 
+ module.exports = { loadConfig };

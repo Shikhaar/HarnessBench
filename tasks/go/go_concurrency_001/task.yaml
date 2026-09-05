@@ -1,0 +1,14 @@
+id: go_concurrency_001
+name: Thread-Safe Cache Mutex Concurrency Fix
+language: go
+category: concurrency
+difficulty: medium
+description: Protect concurrent map reads and writes in Go Cache struct using sync.RWMutex to eliminate data races.
+repository: workspace
+evaluation:
+  command: python run_eval.py
+baseline:
+  command: python run_baseline.py
+expected_files:
+  - src/cache.go
+timeout_seconds: 60

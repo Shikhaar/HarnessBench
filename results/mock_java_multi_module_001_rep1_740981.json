@@ -1,0 +1,125 @@
+{
+  "run_id": "mock_java_multi_module_001_rep1_740981",
+  "task_id": "java_multi_module_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "java",
+  "category": "architecture",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 1,
+  "lines_added": 1,
+  "lines_deleted": 2,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 1,
+    "lines_added": 1,
+    "lines_deleted": 2,
+    "diff_size": 634,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/order-service/src/OrderService.java b/order-service/src/OrderService.java\nindex 6d65fdb..6c5429f 100644\n--- a/order-service/src/OrderService.java\n+++ b/order-service/src/OrderService.java\n@@ -5,8 +5,7 @@ import com.example.payment.PaymentRequest;\n public class OrderService {\n     public boolean processOrder(String orderId, double amount, String token) {\n         PaymentRequest req = new PaymentRequest(orderId, amount, token);\n-        // BUG: Calling obsolete method getPaymentToken()\n-        String t = req.getPaymentToken();\n+        String t = req.getToken();\n         return t != null && !t.isEmpty();\n     }\n }\n",
+  "git_status": " M order-service/src/OrderService.java\n",
+  "started_at": "2026-09-05T05:22:50.981365",
+  "completed_at": "2026-09-05T05:22:57.310682",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "a6fcdb9426810696839cb2256544fa733b9ea5f6",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T05:22:50.981365",
+        "run_id": "mock_java_multi_module_001_rep1_740981",
+        "data": {
+          "task_id": "java_multi_module_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T05:22:52.760062",
+        "run_id": "mock_java_multi_module_001_rep1_740981",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T05:22:53.108291",
+        "run_id": "mock_java_multi_module_001_rep1_740981",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T05:22:54.221719",
+        "run_id": "mock_java_multi_module_001_rep1_740981",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T05:22:54.421858",
+        "run_id": "mock_java_multi_module_001_rep1_740981",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T05:22:55.477077",
+        "run_id": "mock_java_multi_module_001_rep1_740981",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T05:22:56.682289",
+        "run_id": "mock_java_multi_module_001_rep1_740981",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T05:22:57.310682",
+        "run_id": "mock_java_multi_module_001_rep1_740981",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}

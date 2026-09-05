@@ -1,0 +1,14 @@
+id: python_bugfix_001
+name: Token Bucket Rate Limiter Refill Bug
+language: python
+category: bug_fixing
+difficulty: easy
+description: Fix token bucket refill calculation where tokens fail to replenish due to inverted elapsed time subtraction.
+repository: workspace
+evaluation:
+  command: pytest test_eval.py
+baseline:
+  command: pytest tests/test_baseline.py
+expected_files:
+  - src/rate_limiter.py
+timeout_seconds: 60

@@ -1,0 +1,31 @@
+diff --git a/src/cache.go b/src/cache.go
+index f414c41..6f454b5 100644
+--- a/src/cache.go
++++ b/src/cache.go
+@@ -1,6 +1,9 @@
+ package cache
+ 
++import "sync"
++
+ type Cache struct {
++	mu    sync.RWMutex
+ 	items map[string]interface{}
+ }
+ 
+@@ -11,12 +14,14 @@ func NewCache() *Cache {
+ }
+ 
+ func (c *Cache) Get(key string) (interface{}, bool) {
+-	// BUG: Unprotected map read triggers concurrent map read/write race
++	c.mu.RLock()
++	defer c.mu.RUnlock()
+ 	val, ok := c.items[key]
+ 	return val, ok
+ }
+ 
+ func (c *Cache) Set(key string, val interface{}) {
+-	// BUG: Unprotected map write triggers data race
++	c.mu.Lock()
++	defer c.mu.Unlock()
+ 	c.items[key] = val
+ }

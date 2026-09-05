@@ -1,8 +1,0 @@
-{
-  "id": "python_dependency_001",
-  "name": "Collections ABC Compatibility Fix",
-  "description": "Fix AttributeError from deprecated collections.Mapping import for modern Python runtime compatibility.",
-  "expected_files": [
-    "src/sanitizer.py"
-  ]
-}

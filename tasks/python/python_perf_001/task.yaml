@@ -1,0 +1,14 @@
+id: python_perf_001
+name: Optimize Event Deduplicator Search Complexity
+language: python
+category: performance
+difficulty: medium
+description: Refactor O(N^2) list comprehension search in event deduplicator to O(N) using hash set lookup to handle high throughput.
+repository: workspace
+evaluation:
+  command: pytest test_eval.py
+baseline:
+  command: pytest tests/test_baseline.py
+expected_files:
+  - src/deduplicator.py
+timeout_seconds: 60

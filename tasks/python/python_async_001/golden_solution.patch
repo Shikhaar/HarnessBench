@@ -1,0 +1,24 @@
+diff --git a/src/pipeline.py b/src/pipeline.py
+index 115c490..05e02c8 100644
+--- a/src/pipeline.py
++++ b/src/pipeline.py
+@@ -3,9 +3,13 @@ from typing import Any, Dict, List
+ 
+ 
+ async def execute_batch(coros: List[Any]) -> Dict[str, List[Any]]:
+-    """Execute concurrent async tasks.
+-
+-    BUG: Uncaught exception in one coroutine crashes the entire gather.
+-    """
+-    results = await asyncio.gather(*coros)
+-    return {"successes": list(results), "failures": []}
++    """Execute concurrent async tasks."""
++    results = await asyncio.gather(*coros, return_exceptions=True)
++    successes = []
++    failures = []
++    for item in results:
++        if isinstance(item, BaseException):
++            failures.append(item)
++        else:
++            successes.append(item)
++    return {"successes": successes, "failures": failures}

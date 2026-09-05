@@ -1,0 +1,14 @@
+id: java_dependency_001
+name: Resolve Maven Conflicting Logging Dependency Exclusion
+language: java
+category: build_systems
+difficulty: easy
+description: Add dependency exclusion for slf4j-log4j12 under legacy-connector in pom.xml to eliminate SLF4J multiple binding conflicts.
+repository: workspace
+evaluation:
+  command: python run_eval.py
+baseline:
+  command: python run_baseline.py
+expected_files:
+  - pom.xml
+timeout_seconds: 60

@@ -1,0 +1,42 @@
+diff --git a/src/dispatcher.js b/src/dispatcher.js
+index 33410bb..9ba4f1e 100644
+--- a/src/dispatcher.js
++++ b/src/dispatcher.js
+@@ -1,11 +1,12 @@
++const { executeWithRetry } = require('./retry');
++
+ class Dispatcher {
+   constructor(options = {}) {
+     this.options = options;
+   }
+ 
+   async dispatch(fn) {
+-    // Un-refactored direct call
+-    return await fn();
++    return await executeWithRetry(fn, this.options);
+   }
+ }
+ 
+diff --git a/src/retry.js b/src/retry.js
+index 182d1f2..e36c908 100644
+--- a/src/retry.js
++++ b/src/retry.js
+@@ -1,2 +1,16 @@
+-// Retry module stub
+-module.exports = {};
++async function executeWithRetry(fn, { maxRetries = 3, delayMs = 10 } = {}) {
++  let lastError;
++  for (let i = 0; i < maxRetries; i++) {
++    try {
++      return await fn();
++    } catch (err) {
++      lastError = err;
++      if (delayMs > 0) {
++        await new Promise(res => setTimeout(res, delayMs));
++      }
++    }
++  }
++  throw lastError;
++}
++
++module.exports = { executeWithRetry };

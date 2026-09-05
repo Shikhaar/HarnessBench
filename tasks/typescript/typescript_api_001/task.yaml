@@ -1,0 +1,14 @@
+id: typescript_api_001
+name: Fix API Response Serializer Null and Array Handling
+language: typescript
+category: api
+difficulty: medium
+description: Fix recursive camelCase serialization in API response serializer to properly handle null fields and nested object arrays.
+repository: workspace
+evaluation:
+  command: node test_eval.js
+baseline:
+  command: node tests/test_baseline.js
+expected_files:
+  - src/serializer.js
+timeout_seconds: 60

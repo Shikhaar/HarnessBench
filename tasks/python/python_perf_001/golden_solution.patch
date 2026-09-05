@@ -1,0 +1,22 @@
+diff --git a/src/deduplicator.py b/src/deduplicator.py
+index f5b1382..8632096 100644
+--- a/src/deduplicator.py
++++ b/src/deduplicator.py
+@@ -2,13 +2,12 @@ from typing import Any, Dict, List
+ 
+ 
+ def deduplicate_events(events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+-    """Deduplicate events preserving first seen order.
+-
+-    BUG: O(N^2) search over previously collected events.
+-    """
++    """Deduplicate events preserving first seen order."""
+     unique_events: List[Dict[str, Any]] = []
++    seen_ids = set()
+     for event in events:
+         eid = event.get("id")
+-        if eid not in [e.get("id") for e in unique_events]:
++        if eid not in seen_ids:
++            seen_ids.add(eid)
+             unique_events.append(event)
+     return unique_events

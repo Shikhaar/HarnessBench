@@ -1,0 +1,14 @@
+id: python_async_001
+name: Async Batch Pipeline Error Resilience
+language: python
+category: concurrency
+difficulty: medium
+description: Ensure asynchronous batch job pipeline recovers gracefully from partial task failures using return_exceptions rather than crashing the batch.
+repository: workspace
+evaluation:
+  command: pytest test_eval.py
+baseline:
+  command: pytest tests/test_baseline.py
+expected_files:
+  - src/pipeline.py
+timeout_seconds: 60

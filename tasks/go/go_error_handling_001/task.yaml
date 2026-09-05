@@ -1,0 +1,14 @@
+id: go_error_handling_001
+name: Go Sentinel Error Wrapping and Unwrap Protocol
+language: go
+category: error_handling
+difficulty: medium
+description: Implement structured ApiError type supporting error unwrapping (Unwrap) and sentinel error comparison via errors.Is.
+repository: workspace
+evaluation:
+  command: python run_eval.py
+baseline:
+  command: python run_baseline.py
+expected_files:
+  - src/errors.go
+timeout_seconds: 60

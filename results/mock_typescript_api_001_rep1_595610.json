@@ -1,0 +1,125 @@
+{
+  "run_id": "mock_typescript_api_001_rep1_595610",
+  "task_id": "typescript_api_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "typescript",
+  "category": "api",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 1,
+  "lines_added": 5,
+  "lines_deleted": 2,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 1,
+    "lines_added": 5,
+    "lines_deleted": 2,
+    "diff_size": 579,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/serializer.js b/src/serializer.js\nindex 83e52ce..f1e20c4 100644\n--- a/src/serializer.js\n+++ b/src/serializer.js\n@@ -3,11 +3,14 @@ function snakeToCamel(str) {\n }\n \n function serializeApiResponse(data) {\n-  // BUG: Fails on null or arrays\n-  if (typeof data !== 'object') {\n+  if (data === null || typeof data !== 'object') {\n     return data;\n   }\n \n+  if (Array.isArray(data)) {\n+    return data.map(item => serializeApiResponse(item));\n+  }\n+\n   const result = {};\n   for (const [key, value] of Object.entries(data)) {\n     const camelKey = snakeToCamel(key);\n",
+  "git_status": " M src/serializer.js\n",
+  "started_at": "2026-09-05T05:23:30.996748",
+  "completed_at": "2026-09-05T05:23:37.163625",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "a6fcdb9426810696839cb2256544fa733b9ea5f6",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T05:23:30.996748",
+        "run_id": "mock_typescript_api_001_rep1_595610",
+        "data": {
+          "task_id": "typescript_api_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T05:23:32.776930",
+        "run_id": "mock_typescript_api_001_rep1_595610",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T05:23:33.028688",
+        "run_id": "mock_typescript_api_001_rep1_595610",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T05:23:34.129990",
+        "run_id": "mock_typescript_api_001_rep1_595610",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T05:23:34.338203",
+        "run_id": "mock_typescript_api_001_rep1_595610",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T05:23:35.480854",
+        "run_id": "mock_typescript_api_001_rep1_595610",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T05:23:36.523801",
+        "run_id": "mock_typescript_api_001_rep1_595610",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T05:23:37.163625",
+        "run_id": "mock_typescript_api_001_rep1_595610",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}
