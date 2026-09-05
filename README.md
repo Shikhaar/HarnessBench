@@ -1,6 +1,6 @@
 <div align="center">
 
-#  HarnessBench
+# HarnessBench
 
 ### The First Independent Benchmarking Framework for AI Coding Agent Harnesses
 
@@ -15,7 +15,7 @@
 
 **Holding the LLM constant to measure what truly matters in production: execution harnesses across Python, TypeScript, Go, and Java.**
 
-[Overview](#-the-problem) • [Architecture](#-architecture) • [Metrics](#-core-metrics-captured) • [Task Suite](#-12-task-cross-language-suite) • [Quickstart](#-quickstart) • [Running Benchmarks](#-running-the-benchmark) • [Adding Adapters](#-adding-a-harness-adapter) • [Leaderboard](LEADERBOARD.md)
+[Overview](#the-problem) • [Architecture](#architecture) • [Metrics](#core-metrics-captured) • [Task Suite](#12-task-cross-language-suite) • [Quickstart](#quickstart) • [Running Benchmarks](#running-the-benchmark) • [Adding Adapters](#adding-a-harness-adapter) • [Leaderboard](LEADERBOARD.md)
 
 </div>
 
@@ -44,12 +44,12 @@ HarnessBench makes these differences **measurable, reproducible, and verifiable*
 
 | Feature | Description |
 | :--- | :--- |
-| ** Wire-Level Telemetry** | Intercepts HTTP/SSE traffic (`127.0.0.1:8088`) at the network layer. Never trusts harness self-reporting. |
-| ** Two-Stage Regression Guard** | Runs baseline tests *before* and *after* execution. Regressions are immediately caught and penalized. |
-| ** Repo Pollution Analysis** | Deep inspection of `git status --porcelain` and diffs to penalize scratch files, debug dumps, and unrelated edits. |
-| ** True Cost Engine** | Real-time dollar costing using provider rate cards (accounting for input, output, cache-read, and cache-write). |
-| ** Disposable Git Sandboxes** | Every task run receives a fresh, isolated Git workspace. Zero cross-contamination. |
-| ** Rich CLI & Visual Reports** | Terminal leaderboards powered by Rich, structured JSON artifacts, and exportable Markdown reports. |
+| **Wire-Level Telemetry** | Intercepts HTTP/SSE traffic (`127.0.0.1:8088`) at the network layer. Never trusts harness self-reporting. |
+| **Two-Stage Regression Guard** | Runs baseline tests *before* and *after* execution. Regressions are immediately caught and penalized. |
+| **Repo Pollution Analysis** | Deep inspection of `git status --porcelain` and diffs to penalize scratch files, debug dumps, and unrelated edits. |
+| **True Cost Engine** | Real-time dollar costing using provider rate cards (accounting for input, output, cache-read, and cache-write). |
+| **Disposable Git Sandboxes** | Every task run receives a fresh, isolated Git workspace. Zero cross-contamination. |
+| **Rich CLI & Visual Reports** | Terminal leaderboards powered by Rich, structured JSON artifacts, and exportable Markdown reports. |
 
 ---
 

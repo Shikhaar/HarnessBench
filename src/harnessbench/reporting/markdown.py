@@ -30,7 +30,7 @@ def generate_markdown_report(
 
     lines.extend([
         "",
-        "## 🏆 Category Awards",
+        "## Category Awards",
         "",
         "| Award | Winner | Metric Highlight |",
         "| :--- | :--- | :--- |",
@@ -55,7 +55,7 @@ def generate_markdown_report(
 
     lines.extend([
         "",
-        "## 📊 Main Leaderboard Rankings",
+        "## Main Leaderboard Rankings",
         "",
         "| Rank | Harness | Success Rate | Cost / Succ. Task | Median Latency | Tokens / Succ. Task | Regression Rate | Total Pollution |",
         "| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |",
@@ -84,7 +84,7 @@ def generate_markdown_report(
     # Breakdown by Language
     lines.extend([
         "",
-        "## 🌐 Language Breakdown (Success Rate)",
+        "## Language Breakdown (Success Rate)",
         "",
         "| Harness | Python | TypeScript | Go | Java |",
         "| :--- | :---: | :---: | :---: | :---: |",
@@ -103,7 +103,7 @@ def generate_markdown_report(
     if all_categories:
         lines.extend([
             "",
-            "## 🛠️ Software Engineering Capabilities Breakdown",
+            "## Software Engineering Capabilities Breakdown",
             "",
             "| Harness | " + " | ".join(cat.replace("_", " ").title() for cat in all_categories) + " |",
             "| :--- | " + " | ".join([":---:"] * len(all_categories)) + " |",
@@ -116,7 +116,7 @@ def generate_markdown_report(
 
     lines.extend([
         "",
-        "## 🔬 Reproducibility",
+        "## Reproducibility",
         "",
         "To reproduce these exact results locally:",
         "```bash",

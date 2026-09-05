@@ -8,7 +8,7 @@
 **Benchmark Timestamp:** `2026-09-05T05:25:49.313446`  
 **Commit:** `a6fcdb9426810696839cb2256544fa733b9ea5f6`  
 
-## 🏆 Category Awards
+## Category Awards
 
 | Award | Winner | Metric Highlight |
 | :--- | :--- | :--- |
@@ -18,25 +18,25 @@
 | **Cleanest Repository** | **`mock`** | 0 total pollution score |
 | **Lowest Regression Rate** | **`mock`** | 0.0% regression rate |
 
-## 📊 Main Leaderboard Rankings
+## Main Leaderboard Rankings
 
 | Rank | Harness | Success Rate | Cost / Succ. Task | Median Latency | Tokens / Succ. Task | Regression Rate | Total Pollution |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | #1 | **mock** | **100.0%** (12/12) | $0.0000 | 1.2s | 0 | 0.0% | 0 |
 
-## 🌐 Language Breakdown (Success Rate)
+## Language Breakdown (Success Rate)
 
 | Harness | Python | TypeScript | Go | Java |
 | :--- | :---: | :---: | :---: | :---: |
 | **mock** | 100% | 100% | 100% | 100% |
 
-## 🛠️ Software Engineering Capabilities Breakdown
+## Software Engineering Capabilities Breakdown
 
 | Harness | Api | Architecture | Bug Fixing | Build Systems | Concurrency | Dependencies | Error Handling | Performance | Refactoring |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **mock** | 100% | 100% | 100% | 100% | 100% | 100% | 100% | 100% | 100% |
 
-## 🔬 Reproducibility
+## Reproducibility
 
 To reproduce these exact results locally:
 ```bash
