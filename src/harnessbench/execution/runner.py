@@ -197,6 +197,21 @@ class BenchmarkRunner:
             events.record(TelemetryEventType.RUN_FINISHED, success=eval_outcome.success)
 
             is_timeout = (harness_exec.exit_code == -1 or "timed out" in harness_exec.stderr.lower())
+            if baseline_code == 127 or "Command not found" in (b_stderr or ""):
+                status = "environment_unavailable"
+                overall_success = False
+            elif is_timeout:
+                status = "timeout"
+                overall_success = False
+            elif harness_exec.exit_code != 0:
+                status = "harness_failed"
+                overall_success = False
+            elif eval_outcome.success:
+                status = "passed"
+                overall_success = True
+            else:
+                status = "failed"
+                overall_success = False
 
             result = RunResult(
                 run_id=run_id,
@@ -206,7 +221,9 @@ class BenchmarkRunner:
                 language=self.task.language,
                 category=self.task.category,
                 repetition_index=self.repetition_index,
-                success=eval_outcome.success,
+                success=overall_success,
+                status=status,
+                budget_exceeded=False,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
                 cache_read_tokens=cache_read_tokens,
@@ -246,3 +263,33 @@ class BenchmarkRunner:
             run_file.write_text(result.model_dump_json(indent=2), encoding="utf-8")
 
             return result
+
+
+def create_skipped_result(
+    task: BenchmarkTask,
+    harness_name: str,
+    model: str,
+    repetition_index: int = 1,
+    reason: str = "skipped_budget_exceeded",
+    output_dir: Optional[Path] = None,
+) -> RunResult:
+    """Create and persist a RunResult for tasks skipped due to budget or runtime limits."""
+    run_id = f"{harness_name}_{task.id}_rep{repetition_index}_skipped_{uuid.uuid4().hex[:6]}"
+    result = RunResult(
+        run_id=run_id,
+        task_id=task.id,
+        harness=harness_name,
+        model=model,
+        language=task.language,
+        category=task.category,
+        repetition_index=repetition_index,
+        success=False,
+        status=reason,
+        budget_exceeded=True,
+        stdout=f"Task execution skipped: {reason}",
+    )
+    if output_dir:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / f"{run_id}.json").write_text(result.model_dump_json(indent=2), encoding="utf-8")
+    return result
+

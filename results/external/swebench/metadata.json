@@ -1,0 +1,14 @@
+{
+  "name": "swebench",
+  "display_name": "SWE-bench (Verified & Lite)",
+  "description": "Evaluates language models on real GitHub software engineering issues across popular Python repositories.",
+  "source_url": "https://raw.githubusercontent.com/princeton-nlp/SWE-bench/main/docs/leaderboard.json",
+  "license": "MIT",
+  "version": "v1.0",
+  "last_updated": "2024-11-01",
+  "languages": [
+    "python"
+  ],
+  "task_count": 500,
+  "result_count": 3
+}

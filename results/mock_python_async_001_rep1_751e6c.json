@@ -1,0 +1,127 @@
+{
+  "run_id": "mock_python_async_001_rep1_751e6c",
+  "task_id": "python_async_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "python",
+  "category": "concurrency",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 1,
+  "lines_added": 10,
+  "lines_deleted": 6,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 1,
+    "lines_added": 10,
+    "lines_deleted": 6,
+    "diff_size": 836,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "budget_exceeded": false,
+  "status": "passed",
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/pipeline.py b/src/pipeline.py\nindex 115c490..05e02c8 100644\n--- a/src/pipeline.py\n+++ b/src/pipeline.py\n@@ -3,9 +3,13 @@ from typing import Any, Dict, List\n \n \n async def execute_batch(coros: List[Any]) -> Dict[str, List[Any]]:\n-    \"\"\"Execute concurrent async tasks.\n-\n-    BUG: Uncaught exception in one coroutine crashes the entire gather.\n-    \"\"\"\n-    results = await asyncio.gather(*coros)\n-    return {\"successes\": list(results), \"failures\": []}\n+    \"\"\"Execute concurrent async tasks.\"\"\"\n+    results = await asyncio.gather(*coros, return_exceptions=True)\n+    successes = []\n+    failures = []\n+    for item in results:\n+        if isinstance(item, BaseException):\n+            failures.append(item)\n+        else:\n+            successes.append(item)\n+    return {\"successes\": successes, \"failures\": failures}\n",
+  "git_status": " M src/pipeline.py\n",
+  "started_at": "2026-09-05T06:33:16.069509",
+  "completed_at": "2026-09-05T06:33:20.065060",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T06:33:16.069509",
+        "run_id": "mock_python_async_001_rep1_751e6c",
+        "data": {
+          "task_id": "python_async_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:33:16.804950",
+        "run_id": "mock_python_async_001_rep1_751e6c",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:33:17.555156",
+        "run_id": "mock_python_async_001_rep1_751e6c",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T06:33:18.133111",
+        "run_id": "mock_python_async_001_rep1_751e6c",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T06:33:18.232056",
+        "run_id": "mock_python_async_001_rep1_751e6c",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:33:18.749611",
+        "run_id": "mock_python_async_001_rep1_751e6c",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:33:19.788529",
+        "run_id": "mock_python_async_001_rep1_751e6c",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T06:33:20.065060",
+        "run_id": "mock_python_async_001_rep1_751e6c",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}

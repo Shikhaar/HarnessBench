@@ -1,0 +1,22 @@
+diff --git a/src/lib.rs b/src/lib.rs
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -28,3 +28,2 @@ pub fn parse_server_config(raw: &str) -> Result<ServerConfig, ConfigError> {
+     if raw.trim().is_empty() {
+-        // BUG: Inverted/wrong variant returned on empty payload
+-        return Err(ConfigError::MissingKey("payload".to_string()));
++        return Err(ConfigError::EmptyPayload);
+     }
+@@ -42,5 +41,7 @@ pub fn parse_server_config(raw: &str) -> Result<ServerConfig, ConfigError> {
+             if key == "host" {
+                 host = Some(val.to_string());
+             } else if key == "port" {
+-                if let Ok(p) = val.parse::<u16>() {
+-                    // BUG: Does not check p >= 1024, permits privileged/invalid ports
+-                    port = Some(p);
++                let p = val.parse::<u16>().map_err(|_| ConfigError::InvalidPort(0))?;
++                if p < 1024 {
++                    return Err(ConfigError::InvalidPort(p));
+                 }
++                port = Some(p);
+             }

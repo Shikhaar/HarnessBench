@@ -1,0 +1,19 @@
+{
+  "name": "aider-polyglot",
+  "display_name": "Aider Polyglot Benchmark",
+  "description": "Multi-language coding benchmark measuring edit accuracy across Python, JS, Rust, Go, and C++.",
+  "source_url": "https://raw.githubusercontent.com/Aider-AI/aider/main/benchmark/polyglot-results.json",
+  "license": "Apache-2.0",
+  "version": "2024-05",
+  "last_updated": "2024-10-25",
+  "languages": [
+    "python",
+    "javascript",
+    "rust",
+    "go",
+    "cpp",
+    "java"
+  ],
+  "task_count": 225,
+  "result_count": 3
+}

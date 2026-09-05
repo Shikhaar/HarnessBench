@@ -1,0 +1,127 @@
+{
+  "run_id": "mock_go_error_handling_001_rep1_48aead",
+  "task_id": "go_error_handling_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "go",
+  "category": "error_handling",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 1,
+  "lines_added": 17,
+  "lines_deleted": 2,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 1,
+    "lines_added": 17,
+    "lines_deleted": 2,
+    "diff_size": 686,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "budget_exceeded": false,
+  "status": "passed",
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/errors.go b/src/errors.go\nindex d48618c..7674951 100644\n--- a/src/errors.go\n+++ b/src/errors.go\n@@ -1,13 +1,28 @@\n package apierr\n \n-import \"fmt\"\n+import (\n+\t\"errors\"\n+\t\"fmt\"\n+)\n+\n+var (\n+\tErrNotFound     = errors.New(\"resource not found\")\n+\tErrUnauthorized = errors.New(\"unauthorized\")\n+)\n \n-// BUG: Simple string error without Unwrap or sentinel variables\n type ApiError struct {\n \tCode    int\n \tMessage string\n+\tErr     error\n }\n \n func (e *ApiError) Error() string {\n+\tif e.Err != nil {\n+\t\treturn fmt.Sprintf(\"[%d] %s: %v\", e.Code, e.Message, e.Err)\n+\t}\n \treturn fmt.Sprintf(\"[%d] %s\", e.Code, e.Message)\n }\n+\n+func (e *ApiError) Unwrap() error {\n+\treturn e.Err\n+}\n",
+  "git_status": " M src/errors.go\n",
+  "started_at": "2026-09-05T06:33:00.201496",
+  "completed_at": "2026-09-05T06:33:03.364881",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T06:33:00.201496",
+        "run_id": "mock_go_error_handling_001_rep1_48aead",
+        "data": {
+          "task_id": "go_error_handling_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:33:01.012274",
+        "run_id": "mock_go_error_handling_001_rep1_48aead",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:33:01.136427",
+        "run_id": "mock_go_error_handling_001_rep1_48aead",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T06:33:01.819662",
+        "run_id": "mock_go_error_handling_001_rep1_48aead",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T06:33:01.943192",
+        "run_id": "mock_go_error_handling_001_rep1_48aead",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:33:02.490596",
+        "run_id": "mock_go_error_handling_001_rep1_48aead",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:33:03.053009",
+        "run_id": "mock_go_error_handling_001_rep1_48aead",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T06:33:03.364881",
+        "run_id": "mock_go_error_handling_001_rep1_48aead",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}

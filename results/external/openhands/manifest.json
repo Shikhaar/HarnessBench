@@ -1,0 +1,11 @@
+{
+  "dataset_name": "openhands",
+  "source_url": "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/evaluation/results/index.json",
+  "license": "MIT",
+  "version": "v0.12.0",
+  "last_updated": "2024-11-10",
+  "retrieved_at": "2026-09-05T06:32:04.487784",
+  "retrieval_hash": "011478b2e98e14ca8ea5866d7ace7843fbe76b03c7ce85ed6d11d8720080c88a",
+  "record_count": 3,
+  "adapter": "OpenHandsAdapter"
+}

@@ -1,0 +1,11 @@
+{
+  "dataset_name": "swebench",
+  "source_url": "https://raw.githubusercontent.com/princeton-nlp/SWE-bench/main/docs/leaderboard.json",
+  "license": "MIT",
+  "version": "v1.0",
+  "last_updated": "2024-11-01",
+  "retrieved_at": "2026-09-05T06:32:05.087828",
+  "retrieval_hash": "58a7e2d58913a7c246976c0bf6888c39afa1eacaf2523e5272751f2248132d49",
+  "record_count": 3,
+  "adapter": "SWEBenchAdapter"
+}

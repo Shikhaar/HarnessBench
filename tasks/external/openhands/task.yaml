@@ -1,0 +1,9 @@
+id: external_openhands
+name: OpenHands Evaluation Benchmark Index Reference
+source_type: external
+benchmark_name: OpenHands Evaluation Index
+source_url: https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/evaluation/results/index.json
+license: MIT
+languages:
+  - python
+description: Official reference task manifest for OpenHands evaluation benchmark index.

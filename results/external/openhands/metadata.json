@@ -1,0 +1,14 @@
+{
+  "name": "openhands",
+  "display_name": "OpenHands Evaluation Index",
+  "description": "OpenHands autonomous agent evaluation records across SWE-bench and coding benchmarks.",
+  "source_url": "https://raw.githubusercontent.com/All-Hands-AI/OpenHands/main/evaluation/results/index.json",
+  "license": "MIT",
+  "version": "v0.12.0",
+  "last_updated": "2024-11-10",
+  "languages": [
+    "python"
+  ],
+  "task_count": 300,
+  "result_count": 3
+}

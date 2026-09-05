@@ -1,22 +1,25 @@
-"""Rich terminal leaderboard generation with statistical aggregation and awards."""
+"""Rich terminal leaderboard generation with statistical aggregation, awards, and external reference tables."""
 
 from typing import Dict, List, Optional
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
+
+from harnessbench.datasets.models import BenchmarkRecord
+from harnessbench.datasets.registry import load_all_external_records
 from harnessbench.models import RunResult
 from harnessbench.reporting.json_report import calculate_awards, generate_benchmark_summary
 
 
 def render_leaderboard(results: List[RunResult], console: Optional[Console] = None) -> Table:
-    """Render a clean Rich terminal table summarizing benchmark results by harness."""
+    """Render a clean Rich terminal table summarizing controlled HarnessBench results by harness."""
     if console is None:
         console = Console()
 
     summary = generate_benchmark_summary(results)
 
     table = Table(
-        title="[bold cyan]HarnessBench — Cross-Language AI Coding Agent Leaderboard[/bold cyan]",
+        title="[bold cyan]HarnessBench — Controlled Benchmark Results[/bold cyan]",
         header_style="bold magenta",
         show_lines=True,
     )
@@ -71,8 +74,52 @@ def render_leaderboard(results: List[RunResult], console: Optional[Console] = No
     return table
 
 
-def print_leaderboard(results: List[RunResult], console: Optional[Console] = None) -> None:
-    """Print the formatted leaderboard and awards to the console."""
+def render_external_benchmarks_table(records: List[BenchmarkRecord]) -> Table:
+    """Render external reference benchmark data in a distinct, unranked table with provenance."""
+    table = Table(
+        title="[bold yellow]External Benchmark Reference Data (Third-Party Protocols)[/bold yellow]",
+        header_style="bold cyan",
+        show_lines=True,
+    )
+
+    table.add_column("Benchmark", style="bold white")
+    table.add_column("Version", style="dim")
+    table.add_column("Model", style="yellow")
+    table.add_column("Harness / Agent", style="magenta")
+    table.add_column("Language", justify="center")
+    table.add_column("Result / Score", justify="center", style="green")
+    table.add_column("Cost ($)", justify="right")
+    table.add_column("Runtime (s)", justify="right")
+    table.add_column("Retrieved", justify="center", style="dim")
+
+    for rec in records:
+        score_str = f"{rec.score * 100:.1f}%" if rec.score is not None else ("PASS" if rec.success else "FAIL")
+        cost_str = f"${rec.cost_usd:.4f}" if rec.cost_usd is not None else "N/A"
+        time_str = f"{rec.runtime_seconds:.1f}s" if rec.runtime_seconds is not None else "N/A"
+        lang_str = rec.language.capitalize() if rec.language else "-"
+        ret_date = rec.provenance.retrieved_at.strftime("%Y-%m-%d")
+
+        table.add_row(
+            rec.benchmark_name,
+            rec.benchmark_version or "-",
+            rec.model_id or "-",
+            rec.harness or "-",
+            lang_str,
+            score_str,
+            cost_str,
+            time_str,
+            ret_date,
+        )
+
+    return table
+
+
+def print_leaderboard(
+    results: List[RunResult],
+    external_records: Optional[List[BenchmarkRecord]] = None,
+    console: Optional[Console] = None,
+) -> None:
+    """Print the formatted leaderboard, awards, and separate external reference data to console."""
     if console is None:
         console = Console()
 
@@ -89,4 +136,11 @@ def print_leaderboard(results: List[RunResult], console: Optional[Console] = Non
         for award, winner in awards.items():
             awards_table.add_row(award, winner)
         console.print(awards_table)
+
+    # Display external benchmark references separately
+    ext = external_records if external_records is not None else load_all_external_records()
+    if ext:
+        console.print()
+        console.print(render_external_benchmarks_table(ext))
+
     console.print()

@@ -1,0 +1,127 @@
+{
+  "run_id": "mock_python_perf_001_rep1_6c92d5",
+  "task_id": "python_perf_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "python",
+  "category": "performance",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 1,
+  "lines_added": 4,
+  "lines_deleted": 5,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 1,
+    "lines_added": 4,
+    "lines_deleted": 5,
+    "diff_size": 774,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "budget_exceeded": false,
+  "status": "passed",
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/deduplicator.py b/src/deduplicator.py\nindex f5b1382..8632096 100644\n--- a/src/deduplicator.py\n+++ b/src/deduplicator.py\n@@ -2,13 +2,12 @@ from typing import Any, Dict, List\n \n \n def deduplicate_events(events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:\n-    \"\"\"Deduplicate events preserving first seen order.\n-\n-    BUG: O(N^2) search over previously collected events.\n-    \"\"\"\n+    \"\"\"Deduplicate events preserving first seen order.\"\"\"\n     unique_events: List[Dict[str, Any]] = []\n+    seen_ids = set()\n     for event in events:\n         eid = event.get(\"id\")\n-        if eid not in [e.get(\"id\") for e in unique_events]:\n+        if eid not in seen_ids:\n+            seen_ids.add(eid)\n             unique_events.append(event)\n     return unique_events\n",
+  "git_status": " M src/deduplicator.py\n",
+  "started_at": "2026-09-05T06:33:29.518282",
+  "completed_at": "2026-09-05T06:33:38.760232",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T06:33:29.518282",
+        "run_id": "mock_python_perf_001_rep1_6c92d5",
+        "data": {
+          "task_id": "python_perf_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:33:31.410380",
+        "run_id": "mock_python_perf_001_rep1_6c92d5",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:33:32.824041",
+        "run_id": "mock_python_perf_001_rep1_6c92d5",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T06:33:34.012800",
+        "run_id": "mock_python_perf_001_rep1_6c92d5",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T06:33:34.219167",
+        "run_id": "mock_python_perf_001_rep1_6c92d5",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:33:35.553285",
+        "run_id": "mock_python_perf_001_rep1_6c92d5",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:33:38.113959",
+        "run_id": "mock_python_perf_001_rep1_6c92d5",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T06:33:38.760232",
+        "run_id": "mock_python_perf_001_rep1_6c92d5",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}

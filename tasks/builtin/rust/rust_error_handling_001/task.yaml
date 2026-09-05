@@ -1,0 +1,14 @@
+id: rust_error_handling_001
+name: Rust Robust Error Propagation and Result Handling
+language: rust
+category: error_handling
+difficulty: medium
+description: Implement robust Result propagation and custom Error enum variants for server config parser without panicking.
+repository: workspace
+evaluation:
+  command: cargo test --test test_eval
+baseline:
+  command: cargo test --test test_baseline
+expected_files:
+  - src/lib.rs
+timeout_seconds: 60

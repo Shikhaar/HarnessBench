@@ -1,0 +1,56 @@
+[
+  {
+    "instance_id": "django__django-11099",
+    "benchmark": "SWE-bench Verified",
+    "version": "v1.0",
+    "model_name": "claude-3-5-sonnet-20241022",
+    "agent": "SWE-agent",
+    "agent_version": "0.8.0",
+    "resolved": true,
+    "repo": "django/django",
+    "language": "python",
+    "created_at": "2024-11-01T12:00:00Z",
+    "metrics": {
+      "cost_usd": 0.45,
+      "duration_seconds": 182.4,
+      "turns": 7,
+      "patch_diff_size": 248
+    }
+  },
+  {
+    "instance_id": "pytest-dev__pytest-5221",
+    "benchmark": "SWE-bench Lite",
+    "version": "v1.0",
+    "model_name": "gpt-4o-2024-08-06",
+    "agent": "Aider",
+    "agent_version": "0.52.0",
+    "resolved": true,
+    "repo": "pytest-dev/pytest",
+    "language": "python",
+    "created_at": "2024-10-15T14:30:00Z",
+    "metrics": {
+      "cost_usd": 0.28,
+      "duration_seconds": 94.2,
+      "turns": 3,
+      "patch_diff_size": 112
+    }
+  },
+  {
+    "instance_id": "sympy__sympy-18057",
+    "benchmark": "SWE-bench Verified",
+    "version": "v1.0",
+    "model_name": "claude-3-5-sonnet-20241022",
+    "agent": "SWE-agent",
+    "agent_version": "0.8.0",
+    "resolved": false,
+    "repo": "sympy/sympy",
+    "language": "python",
+    "created_at": "2024-11-01T12:35:00Z",
+    "metrics": {
+      "cost_usd": 0.52,
+      "duration_seconds": 210.0,
+      "turns": 12,
+      "patch_diff_size": 430
+    }
+  }
+]

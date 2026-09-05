@@ -1,0 +1,14 @@
+id: external_aider_polyglot
+name: Aider Polyglot Benchmark Suite Reference
+source_type: external
+benchmark_name: Aider Polyglot
+source_url: https://raw.githubusercontent.com/Aider-AI/aider/main/benchmark/polyglot-results.json
+license: Apache-2.0
+languages:
+  - python
+  - javascript
+  - rust
+  - go
+  - cpp
+  - java
+description: Official reference task manifest for Aider Polyglot multi-language coding benchmark.

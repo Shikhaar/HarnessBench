@@ -1,0 +1,127 @@
+{
+  "run_id": "mock_rust_error_handling_001_rep1_15c613",
+  "task_id": "rust_error_handling_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "rust",
+  "category": "error_handling",
+  "repetition_index": 1,
+  "success": false,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 0,
+  "lines_added": 0,
+  "lines_deleted": 0,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 0,
+    "lines_added": 0,
+    "lines_deleted": 0,
+    "diff_size": 0,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": false,
+  "post_tests_passed": false,
+  "regression_detected": false,
+  "timeout": false,
+  "budget_exceeded": false,
+  "status": "environment_unavailable",
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 127,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "",
+  "git_status": "",
+  "started_at": "2026-09-05T06:33:39.080669",
+  "completed_at": "2026-09-05T06:33:45.542668",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T06:33:39.080669",
+        "run_id": "mock_rust_error_handling_001_rep1_15c613",
+        "data": {
+          "task_id": "rust_error_handling_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:33:41.091129",
+        "run_id": "mock_rust_error_handling_001_rep1_15c613",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:33:41.106334",
+        "run_id": "mock_rust_error_handling_001_rep1_15c613",
+        "data": {
+          "phase": "baseline",
+          "passed": false
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T06:33:42.265141",
+        "run_id": "mock_rust_error_handling_001_rep1_15c613",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T06:33:42.657204",
+        "run_id": "mock_rust_error_handling_001_rep1_15c613",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:33:43.918490",
+        "run_id": "mock_rust_error_handling_001_rep1_15c613",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:33:44.899296",
+        "run_id": "mock_rust_error_handling_001_rep1_15c613",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": false
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T06:33:45.542668",
+        "run_id": "mock_rust_error_handling_001_rep1_15c613",
+        "data": {
+          "success": false
+        }
+      }
+    ]
+  }
+}

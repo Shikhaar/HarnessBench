@@ -130,19 +130,51 @@ def validate_task(task: BenchmarkTask) -> TaskValidationResult:
 
     with sandbox:
         # Step 1: Baseline tests in clean repo MUST PASS
-        base_pass, _, b_stdout, b_stderr, _ = execute_test_command(
+        base_pass, b_exit_code, b_stdout, b_stderr, _ = execute_test_command(
             command=task.baseline_command,
             cwd=sandbox.path,
         )
+
+        # Detect if command tool is unavailable in environment (e.g. cargo/go/mvn not installed)
+        if b_exit_code == 127 or "Command not found" in (b_stderr or "") or "not recognized" in (b_stderr or ""):
+            return TaskValidationResult(
+                task_id=task.id,
+                language=task.language,
+                valid=False,
+                status="ENVIRONMENT_UNAVAILABLE",
+                environment_available=False,
+                baseline_pre_passed=False,
+                eval_pre_failed=False,
+                golden_patch_applied=False,
+                eval_post_passed=False,
+                baseline_post_passed=False,
+                errors=[f"Execution environment missing required runtime for '{task.baseline_command}': {b_stderr.strip()}"],
+            )
+
         baseline_pre_passed = base_pass
         if not base_pass:
             errors.append(f"Baseline tests failed on clean starting state:\n{b_stderr or b_stdout}")
 
         # Step 2: Evaluation tests in clean repo MUST FAIL
-        eval_pass_pre, _, e_stdout, e_stderr, _ = execute_test_command(
+        eval_pass_pre, e_exit_code, e_stdout, e_stderr, _ = execute_test_command(
             command=task.evaluation_command,
             cwd=sandbox.path,
         )
+        if e_exit_code == 127 or "Command not found" in (e_stderr or ""):
+            return TaskValidationResult(
+                task_id=task.id,
+                language=task.language,
+                valid=False,
+                status="ENVIRONMENT_UNAVAILABLE",
+                environment_available=False,
+                baseline_pre_passed=baseline_pre_passed,
+                eval_pre_failed=False,
+                golden_patch_applied=False,
+                eval_post_passed=False,
+                baseline_post_passed=False,
+                errors=[f"Execution environment missing required runtime for '{task.evaluation_command}': {e_stderr.strip()}"],
+            )
+
         eval_pre_failed = not eval_pass_pre
         if eval_pass_pre:
             errors.append("Evaluation tests passed on buggy starting state (must fail before fix).")
@@ -193,6 +225,8 @@ def validate_task(task: BenchmarkTask) -> TaskValidationResult:
         task_id=task.id,
         language=task.language,
         valid=is_valid,
+        status="VALID" if is_valid else "INVALID",
+        environment_available=True,
         baseline_pre_passed=baseline_pre_passed,
         eval_pre_failed=eval_pre_failed,
         golden_patch_applied=golden_patch_applied,

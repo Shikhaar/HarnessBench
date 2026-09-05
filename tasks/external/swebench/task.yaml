@@ -1,0 +1,9 @@
+id: external_swebench
+name: SWE-bench Benchmark Suite Reference
+source_type: external
+benchmark_name: SWE-bench
+source_url: https://raw.githubusercontent.com/princeton-nlp/SWE-bench/main/docs/leaderboard.json
+license: MIT
+languages:
+  - python
+description: Official reference task manifest for SWE-bench (Verified & Lite).

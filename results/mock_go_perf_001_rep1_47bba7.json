@@ -1,0 +1,127 @@
+{
+  "run_id": "mock_go_perf_001_rep1_47bba7",
+  "task_id": "go_perf_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "go",
+  "category": "performance",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 1,
+  "lines_added": 7,
+  "lines_deleted": 10,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 1,
+    "lines_added": 7,
+    "lines_deleted": 10,
+    "diff_size": 811,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "budget_exceeded": false,
+  "status": "passed",
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/buffer.go b/src/buffer.go\nindex db8a51a..0442cc9 100644\n--- a/src/buffer.go\n+++ b/src/buffer.go\n@@ -1,26 +1,23 @@\n package buffer\n \n+import \"bytes\"\n+\n type StreamAccumulator struct {\n-\t// BUG: Naive slice reallocation creates excessive memory thrash\n-\tdata []byte\n+\tbuf bytes.Buffer\n }\n \n func NewStreamAccumulator() *StreamAccumulator {\n-\treturn &StreamAccumulator{\n-\t\tdata: make([]byte, 0),\n-\t}\n+\treturn &StreamAccumulator{}\n }\n \n func (s *StreamAccumulator) Write(chunk []byte) (int, error) {\n-\ts.data = append(s.data, chunk...)\n-\treturn len(chunk), nil\n+\treturn s.buf.Write(chunk)\n }\n \n func (s *StreamAccumulator) Bytes() []byte {\n-\treturn s.data\n+\treturn s.buf.Bytes()\n }\n \n func (s *StreamAccumulator) Reset() {\n-\t// Re-allocates every time\n-\ts.data = make([]byte, 0)\n+\ts.buf.Reset()\n }\n",
+  "git_status": " M src/buffer.go\n",
+  "started_at": "2026-09-05T06:33:03.504000",
+  "completed_at": "2026-09-05T06:33:06.592538",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T06:33:03.504000",
+        "run_id": "mock_go_perf_001_rep1_47bba7",
+        "data": {
+          "task_id": "go_perf_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:33:04.353020",
+        "run_id": "mock_go_perf_001_rep1_47bba7",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:33:04.479955",
+        "run_id": "mock_go_perf_001_rep1_47bba7",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T06:33:05.038406",
+        "run_id": "mock_go_perf_001_rep1_47bba7",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T06:33:05.136274",
+        "run_id": "mock_go_perf_001_rep1_47bba7",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:33:05.702968",
+        "run_id": "mock_go_perf_001_rep1_47bba7",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:33:06.265955",
+        "run_id": "mock_go_perf_001_rep1_47bba7",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T06:33:06.592538",
+        "run_id": "mock_go_perf_001_rep1_47bba7",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,1653 @@
+[
+  {
+    "run_id": "mock_go_concurrency_001_rep1_59f83d",
+    "task_id": "go_concurrency_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "go",
+    "category": "concurrency",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 7,
+    "lines_deleted": 2,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 7,
+      "lines_deleted": 2,
+      "diff_size": 662,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/src/cache.go b/src/cache.go\nindex f414c41..6f454b5 100644\n--- a/src/cache.go\n+++ b/src/cache.go\n@@ -1,6 +1,9 @@\n package cache\n \n+import \"sync\"\n+\n type Cache struct {\n+\tmu    sync.RWMutex\n \titems map[string]interface{}\n }\n \n@@ -11,12 +14,14 @@ func NewCache() *Cache {\n }\n \n func (c *Cache) Get(key string) (interface{}, bool) {\n-\t// BUG: Unprotected map read triggers concurrent map read/write race\n+\tc.mu.RLock()\n+\tdefer c.mu.RUnlock()\n \tval, ok := c.items[key]\n \treturn val, ok\n }\n \n func (c *Cache) Set(key string, val interface{}) {\n-\t// BUG: Unprotected map write triggers data race\n+\tc.mu.Lock()\n+\tdefer c.mu.Unlock()\n \tc.items[key] = val\n }\n",
+    "git_status": " M src/cache.go\n",
+    "started_at": "2026-09-05T06:32:56.961207",
+    "completed_at": "2026-09-05T06:32:59.976825",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:32:56.961207",
+          "run_id": "mock_go_concurrency_001_rep1_59f83d",
+          "data": {
+            "task_id": "go_concurrency_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:32:57.709019",
+          "run_id": "mock_go_concurrency_001_rep1_59f83d",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:32:57.857021",
+          "run_id": "mock_go_concurrency_001_rep1_59f83d",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:32:58.455588",
+          "run_id": "mock_go_concurrency_001_rep1_59f83d",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:32:58.553115",
+          "run_id": "mock_go_concurrency_001_rep1_59f83d",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:32:59.119723",
+          "run_id": "mock_go_concurrency_001_rep1_59f83d",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:32:59.676788",
+          "run_id": "mock_go_concurrency_001_rep1_59f83d",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:32:59.976825",
+          "run_id": "mock_go_concurrency_001_rep1_59f83d",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_go_error_handling_001_rep1_48aead",
+    "task_id": "go_error_handling_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "go",
+    "category": "error_handling",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 17,
+    "lines_deleted": 2,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 17,
+      "lines_deleted": 2,
+      "diff_size": 686,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/src/errors.go b/src/errors.go\nindex d48618c..7674951 100644\n--- a/src/errors.go\n+++ b/src/errors.go\n@@ -1,13 +1,28 @@\n package apierr\n \n-import \"fmt\"\n+import (\n+\t\"errors\"\n+\t\"fmt\"\n+)\n+\n+var (\n+\tErrNotFound     = errors.New(\"resource not found\")\n+\tErrUnauthorized = errors.New(\"unauthorized\")\n+)\n \n-// BUG: Simple string error without Unwrap or sentinel variables\n type ApiError struct {\n \tCode    int\n \tMessage string\n+\tErr     error\n }\n \n func (e *ApiError) Error() string {\n+\tif e.Err != nil {\n+\t\treturn fmt.Sprintf(\"[%d] %s: %v\", e.Code, e.Message, e.Err)\n+\t}\n \treturn fmt.Sprintf(\"[%d] %s\", e.Code, e.Message)\n }\n+\n+func (e *ApiError) Unwrap() error {\n+\treturn e.Err\n+}\n",
+    "git_status": " M src/errors.go\n",
+    "started_at": "2026-09-05T06:33:00.201496",
+    "completed_at": "2026-09-05T06:33:03.364881",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:00.201496",
+          "run_id": "mock_go_error_handling_001_rep1_48aead",
+          "data": {
+            "task_id": "go_error_handling_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:01.012274",
+          "run_id": "mock_go_error_handling_001_rep1_48aead",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:01.136427",
+          "run_id": "mock_go_error_handling_001_rep1_48aead",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:01.819662",
+          "run_id": "mock_go_error_handling_001_rep1_48aead",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:01.943192",
+          "run_id": "mock_go_error_handling_001_rep1_48aead",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:02.490596",
+          "run_id": "mock_go_error_handling_001_rep1_48aead",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:03.053009",
+          "run_id": "mock_go_error_handling_001_rep1_48aead",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:03.364881",
+          "run_id": "mock_go_error_handling_001_rep1_48aead",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_go_perf_001_rep1_47bba7",
+    "task_id": "go_perf_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "go",
+    "category": "performance",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 7,
+    "lines_deleted": 10,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 7,
+      "lines_deleted": 10,
+      "diff_size": 811,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/src/buffer.go b/src/buffer.go\nindex db8a51a..0442cc9 100644\n--- a/src/buffer.go\n+++ b/src/buffer.go\n@@ -1,26 +1,23 @@\n package buffer\n \n+import \"bytes\"\n+\n type StreamAccumulator struct {\n-\t// BUG: Naive slice reallocation creates excessive memory thrash\n-\tdata []byte\n+\tbuf bytes.Buffer\n }\n \n func NewStreamAccumulator() *StreamAccumulator {\n-\treturn &StreamAccumulator{\n-\t\tdata: make([]byte, 0),\n-\t}\n+\treturn &StreamAccumulator{}\n }\n \n func (s *StreamAccumulator) Write(chunk []byte) (int, error) {\n-\ts.data = append(s.data, chunk...)\n-\treturn len(chunk), nil\n+\treturn s.buf.Write(chunk)\n }\n \n func (s *StreamAccumulator) Bytes() []byte {\n-\treturn s.data\n+\treturn s.buf.Bytes()\n }\n \n func (s *StreamAccumulator) Reset() {\n-\t// Re-allocates every time\n-\ts.data = make([]byte, 0)\n+\ts.buf.Reset()\n }\n",
+    "git_status": " M src/buffer.go\n",
+    "started_at": "2026-09-05T06:33:03.504000",
+    "completed_at": "2026-09-05T06:33:06.592538",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:03.504000",
+          "run_id": "mock_go_perf_001_rep1_47bba7",
+          "data": {
+            "task_id": "go_perf_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:04.353020",
+          "run_id": "mock_go_perf_001_rep1_47bba7",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:04.479955",
+          "run_id": "mock_go_perf_001_rep1_47bba7",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:05.038406",
+          "run_id": "mock_go_perf_001_rep1_47bba7",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:05.136274",
+          "run_id": "mock_go_perf_001_rep1_47bba7",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:05.702968",
+          "run_id": "mock_go_perf_001_rep1_47bba7",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:06.265955",
+          "run_id": "mock_go_perf_001_rep1_47bba7",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:06.592538",
+          "run_id": "mock_go_perf_001_rep1_47bba7",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_java_dependency_001_rep1_9871f8",
+    "task_id": "java_dependency_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "java",
+    "category": "build_systems",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 6,
+    "lines_deleted": 0,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 6,
+      "lines_deleted": 0,
+      "diff_size": 530,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/pom.xml b/pom.xml\nindex c6244cf..390e67c 100644\n--- a/pom.xml\n+++ b/pom.xml\n@@ -15,6 +15,12 @@\n             <groupId>com.example.legacy</groupId>\n             <artifactId>legacy-connector</artifactId>\n             <version>2.1.0</version>\n+            <exclusions>\n+                <exclusion>\n+                    <groupId>org.slf4j</groupId>\n+                    <artifactId>slf4j-log4j12</artifactId>\n+                </exclusion>\n+            </exclusions>\n         </dependency>\n     </dependencies>\n </project>\n",
+    "git_status": " M pom.xml\n",
+    "started_at": "2026-09-05T06:33:06.757881",
+    "completed_at": "2026-09-05T06:33:09.655380",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:06.757881",
+          "run_id": "mock_java_dependency_001_rep1_9871f8",
+          "data": {
+            "task_id": "java_dependency_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:07.573904",
+          "run_id": "mock_java_dependency_001_rep1_9871f8",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:07.688747",
+          "run_id": "mock_java_dependency_001_rep1_9871f8",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:08.201659",
+          "run_id": "mock_java_dependency_001_rep1_9871f8",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:08.296103",
+          "run_id": "mock_java_dependency_001_rep1_9871f8",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:08.807852",
+          "run_id": "mock_java_dependency_001_rep1_9871f8",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:09.371405",
+          "run_id": "mock_java_dependency_001_rep1_9871f8",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:09.655380",
+          "run_id": "mock_java_dependency_001_rep1_9871f8",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_java_multi_module_001_rep1_e74841",
+    "task_id": "java_multi_module_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "java",
+    "category": "architecture",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 1,
+    "lines_deleted": 2,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 1,
+      "lines_deleted": 2,
+      "diff_size": 634,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/order-service/src/OrderService.java b/order-service/src/OrderService.java\nindex 6d65fdb..6c5429f 100644\n--- a/order-service/src/OrderService.java\n+++ b/order-service/src/OrderService.java\n@@ -5,8 +5,7 @@ import com.example.payment.PaymentRequest;\n public class OrderService {\n     public boolean processOrder(String orderId, double amount, String token) {\n         PaymentRequest req = new PaymentRequest(orderId, amount, token);\n-        // BUG: Calling obsolete method getPaymentToken()\n-        String t = req.getPaymentToken();\n+        String t = req.getToken();\n         return t != null && !t.isEmpty();\n     }\n }\n",
+    "git_status": " M order-service/src/OrderService.java\n",
+    "started_at": "2026-09-05T06:33:09.781553",
+    "completed_at": "2026-09-05T06:33:13.005729",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:09.781553",
+          "run_id": "mock_java_multi_module_001_rep1_e74841",
+          "data": {
+            "task_id": "java_multi_module_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:10.516253",
+          "run_id": "mock_java_multi_module_001_rep1_e74841",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:10.636747",
+          "run_id": "mock_java_multi_module_001_rep1_e74841",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:11.202422",
+          "run_id": "mock_java_multi_module_001_rep1_e74841",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:11.305095",
+          "run_id": "mock_java_multi_module_001_rep1_e74841",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:11.822148",
+          "run_id": "mock_java_multi_module_001_rep1_e74841",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:12.395984",
+          "run_id": "mock_java_multi_module_001_rep1_e74841",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:13.005729",
+          "run_id": "mock_java_multi_module_001_rep1_e74841",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_java_refactor_001_rep1_01b740",
+    "task_id": "java_refactor_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "java",
+    "category": "refactoring",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 26,
+    "lines_deleted": 1,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 26,
+      "lines_deleted": 1,
+      "diff_size": 1737,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/src/UserAccount.java b/src/UserAccount.java\nindex a4ad924..b6206e6 100644\n--- a/src/UserAccount.java\n+++ b/src/UserAccount.java\n@@ -6,7 +6,6 @@ public class UserAccount {\n     private String role;\n     private boolean enabled;\n \n-    // BUG: Telescoping constructor anti-pattern, no Builder\n     public UserAccount(String username, String email, String role, boolean enabled) {\n         this.username = username;\n         this.email = email;\n@@ -14,6 +13,32 @@ public class UserAccount {\n         this.enabled = enabled;\n     }\n \n+    public static Builder builder() {\n+        return new Builder();\n+    }\n+\n+    public static class Builder {\n+        private String username;\n+        private String email;\n+        private String role = \"USER\";\n+        private boolean enabled = true;\n+\n+        public Builder username(String username) { this.username = username; return this; }\n+        public Builder email(String email) { this.email = email; return this; }\n+        public Builder role(String role) { this.role = role; return this; }\n+        public Builder enabled(boolean enabled) { this.enabled = enabled; return this; }\n+\n+        public UserAccount build() {\n+            if (username == null || username.trim().isEmpty()) {\n+                throw new IllegalArgumentException(\"username cannot be empty\");\n+            }\n+            if (email == null || email.trim().isEmpty()) {\n+                throw new IllegalArgumentException(\"email cannot be empty\");\n+            }\n+            return new UserAccount(username, email, role, enabled);\n+        }\n+    }\n+\n     public String getUsername() { return username; }\n     public String getEmail() { return email; }\n     public String getRole() { return role; }\n",
+    "git_status": " M src/UserAccount.java\n",
+    "started_at": "2026-09-05T06:33:13.183593",
+    "completed_at": "2026-09-05T06:33:15.944405",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:13.183593",
+          "run_id": "mock_java_refactor_001_rep1_01b740",
+          "data": {
+            "task_id": "java_refactor_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:13.906737",
+          "run_id": "mock_java_refactor_001_rep1_01b740",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:14.021005",
+          "run_id": "mock_java_refactor_001_rep1_01b740",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:14.527551",
+          "run_id": "mock_java_refactor_001_rep1_01b740",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:14.616552",
+          "run_id": "mock_java_refactor_001_rep1_01b740",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:15.141677",
+          "run_id": "mock_java_refactor_001_rep1_01b740",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:15.663257",
+          "run_id": "mock_java_refactor_001_rep1_01b740",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:15.944405",
+          "run_id": "mock_java_refactor_001_rep1_01b740",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_python_async_001_rep1_751e6c",
+    "task_id": "python_async_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "python",
+    "category": "concurrency",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 10,
+    "lines_deleted": 6,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 10,
+      "lines_deleted": 6,
+      "diff_size": 836,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/src/pipeline.py b/src/pipeline.py\nindex 115c490..05e02c8 100644\n--- a/src/pipeline.py\n+++ b/src/pipeline.py\n@@ -3,9 +3,13 @@ from typing import Any, Dict, List\n \n \n async def execute_batch(coros: List[Any]) -> Dict[str, List[Any]]:\n-    \"\"\"Execute concurrent async tasks.\n-\n-    BUG: Uncaught exception in one coroutine crashes the entire gather.\n-    \"\"\"\n-    results = await asyncio.gather(*coros)\n-    return {\"successes\": list(results), \"failures\": []}\n+    \"\"\"Execute concurrent async tasks.\"\"\"\n+    results = await asyncio.gather(*coros, return_exceptions=True)\n+    successes = []\n+    failures = []\n+    for item in results:\n+        if isinstance(item, BaseException):\n+            failures.append(item)\n+        else:\n+            successes.append(item)\n+    return {\"successes\": successes, \"failures\": failures}\n",
+    "git_status": " M src/pipeline.py\n",
+    "started_at": "2026-09-05T06:33:16.069509",
+    "completed_at": "2026-09-05T06:33:20.065060",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:16.069509",
+          "run_id": "mock_python_async_001_rep1_751e6c",
+          "data": {
+            "task_id": "python_async_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:16.804950",
+          "run_id": "mock_python_async_001_rep1_751e6c",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:17.555156",
+          "run_id": "mock_python_async_001_rep1_751e6c",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:18.133111",
+          "run_id": "mock_python_async_001_rep1_751e6c",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:18.232056",
+          "run_id": "mock_python_async_001_rep1_751e6c",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:18.749611",
+          "run_id": "mock_python_async_001_rep1_751e6c",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:19.788529",
+          "run_id": "mock_python_async_001_rep1_751e6c",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:20.065060",
+          "run_id": "mock_python_async_001_rep1_751e6c",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_python_bugfix_001_rep1_7bab93",
+    "task_id": "python_bugfix_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "python",
+    "category": "bug_fixing",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 1,
+    "lines_deleted": 1,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 1,
+      "lines_deleted": 1,
+      "diff_size": 536,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/src/rate_limiter.py b/src/rate_limiter.py\nindex 7a35838..c184c4d 100644\n--- a/src/rate_limiter.py\n+++ b/src/rate_limiter.py\n@@ -15,7 +15,7 @@ class TokenBucket:\n     def refill(self) -> None:\n         now = time.time()\n         # BUG: Inverted elapsed calculation causes elapsed to be negative or 0\n-        elapsed = self.last_refill - now\n+        elapsed = now - self.last_refill\n         if elapsed > 0:\n             added = elapsed * self.refill_rate\n             self.tokens = min(self.capacity, self.tokens + added)\n",
+    "git_status": " M src/rate_limiter.py\n",
+    "started_at": "2026-09-05T06:33:20.204982",
+    "completed_at": "2026-09-05T06:33:29.179022",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:20.204982",
+          "run_id": "mock_python_bugfix_001_rep1_7bab93",
+          "data": {
+            "task_id": "python_bugfix_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:21.593613",
+          "run_id": "mock_python_bugfix_001_rep1_7bab93",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:23.162730",
+          "run_id": "mock_python_bugfix_001_rep1_7bab93",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:24.743940",
+          "run_id": "mock_python_bugfix_001_rep1_7bab93",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:24.976816",
+          "run_id": "mock_python_bugfix_001_rep1_7bab93",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:26.249653",
+          "run_id": "mock_python_bugfix_001_rep1_7bab93",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:28.541867",
+          "run_id": "mock_python_bugfix_001_rep1_7bab93",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:29.179022",
+          "run_id": "mock_python_bugfix_001_rep1_7bab93",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_python_perf_001_rep1_6c92d5",
+    "task_id": "python_perf_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "python",
+    "category": "performance",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 4,
+    "lines_deleted": 5,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 4,
+      "lines_deleted": 5,
+      "diff_size": 774,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/src/deduplicator.py b/src/deduplicator.py\nindex f5b1382..8632096 100644\n--- a/src/deduplicator.py\n+++ b/src/deduplicator.py\n@@ -2,13 +2,12 @@ from typing import Any, Dict, List\n \n \n def deduplicate_events(events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:\n-    \"\"\"Deduplicate events preserving first seen order.\n-\n-    BUG: O(N^2) search over previously collected events.\n-    \"\"\"\n+    \"\"\"Deduplicate events preserving first seen order.\"\"\"\n     unique_events: List[Dict[str, Any]] = []\n+    seen_ids = set()\n     for event in events:\n         eid = event.get(\"id\")\n-        if eid not in [e.get(\"id\") for e in unique_events]:\n+        if eid not in seen_ids:\n+            seen_ids.add(eid)\n             unique_events.append(event)\n     return unique_events\n",
+    "git_status": " M src/deduplicator.py\n",
+    "started_at": "2026-09-05T06:33:29.518282",
+    "completed_at": "2026-09-05T06:33:38.760232",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:29.518282",
+          "run_id": "mock_python_perf_001_rep1_6c92d5",
+          "data": {
+            "task_id": "python_perf_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:31.410380",
+          "run_id": "mock_python_perf_001_rep1_6c92d5",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:32.824041",
+          "run_id": "mock_python_perf_001_rep1_6c92d5",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:34.012800",
+          "run_id": "mock_python_perf_001_rep1_6c92d5",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:34.219167",
+          "run_id": "mock_python_perf_001_rep1_6c92d5",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:35.553285",
+          "run_id": "mock_python_perf_001_rep1_6c92d5",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:38.113959",
+          "run_id": "mock_python_perf_001_rep1_6c92d5",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:38.760232",
+          "run_id": "mock_python_perf_001_rep1_6c92d5",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_rust_error_handling_001_rep1_15c613",
+    "task_id": "rust_error_handling_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "rust",
+    "category": "error_handling",
+    "repetition_index": 1,
+    "success": false,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 0,
+    "lines_added": 0,
+    "lines_deleted": 0,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 0,
+      "lines_added": 0,
+      "lines_deleted": 0,
+      "diff_size": 0,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": false,
+    "post_tests_passed": false,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "environment_unavailable",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 127,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "",
+    "git_status": "",
+    "started_at": "2026-09-05T06:33:39.080669",
+    "completed_at": "2026-09-05T06:33:45.542668",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:39.080669",
+          "run_id": "mock_rust_error_handling_001_rep1_15c613",
+          "data": {
+            "task_id": "rust_error_handling_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:41.091129",
+          "run_id": "mock_rust_error_handling_001_rep1_15c613",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:41.106334",
+          "run_id": "mock_rust_error_handling_001_rep1_15c613",
+          "data": {
+            "phase": "baseline",
+            "passed": false
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:42.265141",
+          "run_id": "mock_rust_error_handling_001_rep1_15c613",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:42.657204",
+          "run_id": "mock_rust_error_handling_001_rep1_15c613",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:43.918490",
+          "run_id": "mock_rust_error_handling_001_rep1_15c613",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:44.899296",
+          "run_id": "mock_rust_error_handling_001_rep1_15c613",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": false
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:45.542668",
+          "run_id": "mock_rust_error_handling_001_rep1_15c613",
+          "data": {
+            "success": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_typescript_api_001_rep1_4796b2",
+    "task_id": "typescript_api_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "typescript",
+    "category": "api",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 5,
+    "lines_deleted": 2,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 5,
+      "lines_deleted": 2,
+      "diff_size": 579,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/src/serializer.js b/src/serializer.js\nindex 83e52ce..f1e20c4 100644\n--- a/src/serializer.js\n+++ b/src/serializer.js\n@@ -3,11 +3,14 @@ function snakeToCamel(str) {\n }\n \n function serializeApiResponse(data) {\n-  // BUG: Fails on null or arrays\n-  if (typeof data !== 'object') {\n+  if (data === null || typeof data !== 'object') {\n     return data;\n   }\n \n+  if (Array.isArray(data)) {\n+    return data.map(item => serializeApiResponse(item));\n+  }\n+\n   const result = {};\n   for (const [key, value] of Object.entries(data)) {\n     const camelKey = snakeToCamel(key);\n",
+    "git_status": " M src/serializer.js\n",
+    "started_at": "2026-09-05T06:33:45.801203",
+    "completed_at": "2026-09-05T06:33:52.397882",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:45.801203",
+          "run_id": "mock_typescript_api_001_rep1_4796b2",
+          "data": {
+            "task_id": "typescript_api_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:47.790435",
+          "run_id": "mock_typescript_api_001_rep1_4796b2",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:48.033393",
+          "run_id": "mock_typescript_api_001_rep1_4796b2",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:49.165505",
+          "run_id": "mock_typescript_api_001_rep1_4796b2",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:49.454738",
+          "run_id": "mock_typescript_api_001_rep1_4796b2",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:50.628922",
+          "run_id": "mock_typescript_api_001_rep1_4796b2",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:51.772232",
+          "run_id": "mock_typescript_api_001_rep1_4796b2",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:52.397882",
+          "run_id": "mock_typescript_api_001_rep1_4796b2",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_typescript_dependency_001_rep1_fdb371",
+    "task_id": "typescript_dependency_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "typescript",
+    "category": "dependencies",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 1,
+    "lines_added": 12,
+    "lines_deleted": 3,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 1,
+      "lines_added": 12,
+      "lines_deleted": 3,
+      "diff_size": 644,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/src/env_loader.js b/src/env_loader.js\nindex 03d437f..85edee5 100644\n--- a/src/env_loader.js\n+++ b/src/env_loader.js\n@@ -1,7 +1,16 @@\n function loadConfig(jsonString) {\n-  // BUG: Direct JSON.parse fails on trailing commas or comments\n-  const parsed = JSON.parse(jsonString);\n-  return parsed;\n+  try {\n+    let clean = jsonString.replace(/\\/\\/.*$/gm, '');\n+    clean = clean.replace(/,(\\s*[}\\]])/g, '$1');\n+    const parsed = JSON.parse(clean);\n+    return {\n+      port: 3000,\n+      debug: false,\n+      ...parsed,\n+    };\n+  } catch (err) {\n+    return { port: 3000, debug: false };\n+  }\n }\n \n module.exports = { loadConfig };\n",
+    "git_status": " M src/env_loader.js\n",
+    "started_at": "2026-09-05T06:33:52.697071",
+    "completed_at": "2026-09-05T06:33:59.334991",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:52.697071",
+          "run_id": "mock_typescript_dependency_001_rep1_fdb371",
+          "data": {
+            "task_id": "typescript_dependency_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:54.579192",
+          "run_id": "mock_typescript_dependency_001_rep1_fdb371",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:54.820804",
+          "run_id": "mock_typescript_dependency_001_rep1_fdb371",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:33:56.052328",
+          "run_id": "mock_typescript_dependency_001_rep1_fdb371",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:33:56.276160",
+          "run_id": "mock_typescript_dependency_001_rep1_fdb371",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:33:57.454709",
+          "run_id": "mock_typescript_dependency_001_rep1_fdb371",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:33:58.603781",
+          "run_id": "mock_typescript_dependency_001_rep1_fdb371",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:33:59.334991",
+          "run_id": "mock_typescript_dependency_001_rep1_fdb371",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  },
+  {
+    "run_id": "mock_typescript_refactor_001_rep1_5eee9f",
+    "task_id": "typescript_refactor_001",
+    "harness": "mock",
+    "model": "claude-3-5-sonnet-20241022",
+    "language": "typescript",
+    "category": "refactoring",
+    "repetition_index": 1,
+    "success": true,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "total_tokens": 0,
+    "cost_usd": 0.0,
+    "cost_per_successful_task": null,
+    "tokens_per_successful_task": null,
+    "turn_count": null,
+    "duration_seconds": 1.2,
+    "time_to_first_api_request": null,
+    "files_changed": 2,
+    "lines_added": 19,
+    "lines_deleted": 4,
+    "unexpected_files": [],
+    "pollution_score": 0,
+    "patch_quality": {
+      "files_changed": 2,
+      "lines_added": 19,
+      "lines_deleted": 4,
+      "diff_size": 995,
+      "unexpected_files": [],
+      "unrelated_modifications": [],
+      "quality_score": 1.0
+    },
+    "pre_existing_tests_passed": true,
+    "post_tests_passed": true,
+    "regression_detected": false,
+    "timeout": false,
+    "budget_exceeded": false,
+    "status": "passed",
+    "harness_exit_code": 0,
+    "evaluation_exit_code": 0,
+    "api_errors": 0,
+    "stdout": "Mock agent executed successfully.",
+    "stderr": "",
+    "git_diff": "diff --git a/src/dispatcher.js b/src/dispatcher.js\nindex 33410bb..9ba4f1e 100644\n--- a/src/dispatcher.js\n+++ b/src/dispatcher.js\n@@ -1,11 +1,12 @@\n+const { executeWithRetry } = require('./retry');\n+\n class Dispatcher {\n   constructor(options = {}) {\n     this.options = options;\n   }\n \n   async dispatch(fn) {\n-    // Un-refactored direct call\n-    return await fn();\n+    return await executeWithRetry(fn, this.options);\n   }\n }\n \ndiff --git a/src/retry.js b/src/retry.js\nindex 182d1f2..e36c908 100644\n--- a/src/retry.js\n+++ b/src/retry.js\n@@ -1,2 +1,16 @@\n-// Retry module stub\n-module.exports = {};\n+async function executeWithRetry(fn, { maxRetries = 3, delayMs = 10 } = {}) {\n+  let lastError;\n+  for (let i = 0; i < maxRetries; i++) {\n+    try {\n+      return await fn();\n+    } catch (err) {\n+      lastError = err;\n+      if (delayMs > 0) {\n+        await new Promise(res => setTimeout(res, delayMs));\n+      }\n+    }\n+  }\n+  throw lastError;\n+}\n+\n+module.exports = { executeWithRetry };\n",
+    "git_status": " M src/dispatcher.js\n M src/retry.js\n",
+    "started_at": "2026-09-05T06:33:59.596678",
+    "completed_at": "2026-09-05T06:34:06.673729",
+    "harnessbench_version": "0.1.0",
+    "python_version": "3.11.9",
+    "os_info": "Windows-10-10.0.26200-SP0",
+    "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+    "extra_metadata": {
+      "events": [
+        {
+          "event_type": "run_started",
+          "timestamp": "2026-09-05T06:33:59.596678",
+          "run_id": "mock_typescript_refactor_001_rep1_5eee9f",
+          "data": {
+            "task_id": "typescript_refactor_001",
+            "harness": "mock",
+            "model": "claude-3-5-sonnet-20241022",
+            "repetition": 1
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:34:01.498054",
+          "run_id": "mock_typescript_refactor_001_rep1_5eee9f",
+          "data": {
+            "phase": "baseline"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:34:01.775370",
+          "run_id": "mock_typescript_refactor_001_rep1_5eee9f",
+          "data": {
+            "phase": "baseline",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "harness_started",
+          "timestamp": "2026-09-05T06:34:02.924742",
+          "run_id": "mock_typescript_refactor_001_rep1_5eee9f",
+          "data": {
+            "harness": "mock"
+          }
+        },
+        {
+          "event_type": "harness_finished",
+          "timestamp": "2026-09-05T06:34:03.215258",
+          "run_id": "mock_typescript_refactor_001_rep1_5eee9f",
+          "data": {
+            "exit_code": 0,
+            "duration": 1.2
+          }
+        },
+        {
+          "event_type": "tests_started",
+          "timestamp": "2026-09-05T06:34:04.550683",
+          "run_id": "mock_typescript_refactor_001_rep1_5eee9f",
+          "data": {
+            "phase": "post_evaluation"
+          }
+        },
+        {
+          "event_type": "tests_finished",
+          "timestamp": "2026-09-05T06:34:05.812135",
+          "run_id": "mock_typescript_refactor_001_rep1_5eee9f",
+          "data": {
+            "phase": "post_evaluation",
+            "passed": true
+          }
+        },
+        {
+          "event_type": "run_finished",
+          "timestamp": "2026-09-05T06:34:06.673729",
+          "run_id": "mock_typescript_refactor_001_rep1_5eee9f",
+          "data": {
+            "success": true
+          }
+        }
+      ]
+    }
+  }
+]

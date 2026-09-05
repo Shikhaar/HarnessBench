@@ -15,7 +15,7 @@ class BenchmarkTask(BaseModel):
     difficulty: str = Field("medium", description="Task difficulty: easy, medium, hard")
     description: str = Field("", description="Task description and goals")
     repository: Optional[str] = Field(None, description="Path to seed repository template")
-    prompt_path: Path = Field(..., description="Path to task prompt markdown file")
+    prompt_path: Optional[Path] = Field(None, description="Path to task prompt markdown file")
     evaluation_command: Union[str, List[str]] = Field(..., description="Generic command to evaluate task completion")
     baseline_command: Union[str, List[str]] = Field(..., description="Generic command to verify baseline state")
     golden_patch_path: Optional[Path] = Field(None, description="Path to golden reference patch")
@@ -96,6 +96,8 @@ class RunResult(BaseModel):
     regression_detected: bool = False
 
     timeout: bool = False
+    budget_exceeded: bool = False
+    status: str = "passed"
     harness_exit_code: int = 0
     evaluation_exit_code: int = 0
     api_errors: int = 0
@@ -122,6 +124,8 @@ class TaskValidationResult(BaseModel):
     task_id: str
     language: str
     valid: bool
+    status: str = "VALID"
+    environment_available: bool = True
     baseline_pre_passed: bool
     eval_pre_failed: bool
     golden_patch_applied: bool

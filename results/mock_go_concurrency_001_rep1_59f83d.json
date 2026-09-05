@@ -1,0 +1,127 @@
+{
+  "run_id": "mock_go_concurrency_001_rep1_59f83d",
+  "task_id": "go_concurrency_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "go",
+  "category": "concurrency",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 1,
+  "lines_added": 7,
+  "lines_deleted": 2,
+  "unexpected_files": [],
+  "pollution_score": 0,
+  "patch_quality": {
+    "files_changed": 1,
+    "lines_added": 7,
+    "lines_deleted": 2,
+    "diff_size": 662,
+    "unexpected_files": [],
+    "unrelated_modifications": [],
+    "quality_score": 1.0
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "budget_exceeded": false,
+  "status": "passed",
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/cache.go b/src/cache.go\nindex f414c41..6f454b5 100644\n--- a/src/cache.go\n+++ b/src/cache.go\n@@ -1,6 +1,9 @@\n package cache\n \n+import \"sync\"\n+\n type Cache struct {\n+\tmu    sync.RWMutex\n \titems map[string]interface{}\n }\n \n@@ -11,12 +14,14 @@ func NewCache() *Cache {\n }\n \n func (c *Cache) Get(key string) (interface{}, bool) {\n-\t// BUG: Unprotected map read triggers concurrent map read/write race\n+\tc.mu.RLock()\n+\tdefer c.mu.RUnlock()\n \tval, ok := c.items[key]\n \treturn val, ok\n }\n \n func (c *Cache) Set(key string, val interface{}) {\n-\t// BUG: Unprotected map write triggers data race\n+\tc.mu.Lock()\n+\tdefer c.mu.Unlock()\n \tc.items[key] = val\n }\n",
+  "git_status": " M src/cache.go\n",
+  "started_at": "2026-09-05T06:32:56.961207",
+  "completed_at": "2026-09-05T06:32:59.976825",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.9",
+  "os_info": "Windows-10-10.0.26200-SP0",
+  "git_commit": "8dddb6a99d913f81b84d6ed52cf61e37e51e6969",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-09-05T06:32:56.961207",
+        "run_id": "mock_go_concurrency_001_rep1_59f83d",
+        "data": {
+          "task_id": "go_concurrency_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:32:57.709019",
+        "run_id": "mock_go_concurrency_001_rep1_59f83d",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:32:57.857021",
+        "run_id": "mock_go_concurrency_001_rep1_59f83d",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-09-05T06:32:58.455588",
+        "run_id": "mock_go_concurrency_001_rep1_59f83d",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-09-05T06:32:58.553115",
+        "run_id": "mock_go_concurrency_001_rep1_59f83d",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-09-05T06:32:59.119723",
+        "run_id": "mock_go_concurrency_001_rep1_59f83d",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-09-05T06:32:59.676788",
+        "run_id": "mock_go_concurrency_001_rep1_59f83d",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-09-05T06:32:59.976825",
+        "run_id": "mock_go_concurrency_001_rep1_59f83d",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}

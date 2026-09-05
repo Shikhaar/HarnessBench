@@ -1,0 +1,11 @@
+{
+  "dataset_name": "aider-polyglot",
+  "source_url": "https://raw.githubusercontent.com/Aider-AI/aider/main/benchmark/polyglot-results.json",
+  "license": "Apache-2.0",
+  "version": "2024-05",
+  "last_updated": "2024-10-25",
+  "retrieved_at": "2026-09-05T06:32:03.861763",
+  "retrieval_hash": "fe687fdb501307feae8e662cce3b5f3c38d224f484a5eab07befaba9657e5e11",
+  "record_count": 3,
+  "adapter": "AiderPolyglotAdapter"
+}
