@@ -42,10 +42,17 @@ def test_end_to_end_benchmark_pipeline(tmp_path: Path):
 
     # Verify aggregate reports
     report_json = output_dir / "benchmark_report.json"
-    save_benchmark_report(runs=[result], model="claude-3-5-sonnet-20241022", output_path=report_json)
+    save_benchmark_report(
+        runs=[result],
+        model="claude-3-5-sonnet-20241022",
+        output_path=report_json,
+    )
     assert report_json.exists()
 
-    md_report = generate_markdown_report(runs=[result], model="claude-3-5-sonnet-20241022")
+    md_report = generate_markdown_report(
+        runs=[result],
+        model="claude-3-5-sonnet-20241022",
+    )
     assert "Leaderboard" in md_report and "HarnessBench" in md_report
 
     # Verify leaderboard table builds

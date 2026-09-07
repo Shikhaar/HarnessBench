@@ -1,7 +1,6 @@
 import shutil
 import subprocess
 import sys
-import xml.etree.ElementTree as ET
 from pathlib import Path
 
 # If mvn is in PATH, run dependency tree validation

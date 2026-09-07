@@ -5,7 +5,8 @@ from pathlib import Path
 
 # If go is in PATH and go.mod exists, run go test
 if shutil.which("go") and Path("go.mod").exists():
-    res = subprocess.run(["go", "test", "-run", "TestBaseline", "./..."], capture_output=True, text=True)
+    cmd = ["go", "test", "-run", "TestBaseline", "./..."]
+    res = subprocess.run(cmd, capture_output=True, text=True)
     sys.exit(res.returncode)
 
 # Portable check: ensure struct has NewCache and basic methods
