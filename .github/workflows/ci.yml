@@ -48,6 +48,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .[dev]
 
+      - name: Lint Codebase with Ruff
+        run: |
+          ruff check src tests
+
       - name: Run Test Suite (Offline)
         run: |
           pytest -v

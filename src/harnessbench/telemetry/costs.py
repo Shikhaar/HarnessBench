@@ -1,7 +1,7 @@
 """Model pricing definitions and financial cost calculation."""
 
 from decimal import Decimal
-from typing import Dict, Optional
+from typing import Dict
 from pydantic import BaseModel
 
 

@@ -3,7 +3,6 @@
 from pathlib import Path
 from harnessbench.datasets.registry import (
     fetch_and_save_dataset,
-    get_adapter,
     list_adapters,
     list_dataset_names,
     load_dataset_records,
@@ -88,8 +87,6 @@ def test_openhands_normalization():
 
 
 def test_dataset_save_and_manifest_generation(tmp_path: Path):
-    fixture = FIXTURES_DIR / "aider_polyglot" / "polyglot_results.json"
-    adapter = AiderPolyglotAdapter(fixture_override=fixture)
     meta, count, saved_dir = fetch_and_save_dataset("aider-polyglot", output_root=tmp_path)
 
     assert count == 3

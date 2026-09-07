@@ -10,18 +10,15 @@ from typing import List, Optional
 import typer
 import uvicorn
 from rich.console import Console
-from rich.panel import Panel
 from rich.table import Table
 
 from harnessbench import __version__
 from harnessbench.adapters import get_adapter, list_adapters
 from harnessbench.datasets.registry import (
     fetch_and_save_dataset,
-    get_adapter as get_dataset_adapter,
     list_adapters as list_dataset_adapters,
     list_dataset_names,
     load_all_external_records,
-    load_dataset_records,
 )
 from harnessbench.execution.runner import (
     BenchmarkRunner,
@@ -479,7 +476,7 @@ def compare(
         console.print("[red]Error: --source must be either 'harnessbench' or 'external'.[/red]")
         raise typer.Exit(code=1)
 
-    h_list = [h.strip().lower() for h in harnesses.split(",")] if harnesses else None
+    h_list = [h.strip().lower() for h in harnesses.split(",")] if harnesses else []
 
     # 1. Query Controlled HarnessBench runs
     if src_filter in (None, "harnessbench"):

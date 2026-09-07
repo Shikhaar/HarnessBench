@@ -1,6 +1,5 @@
 """Registry and manager for external benchmark dataset adapters."""
 
-import json
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Type
 

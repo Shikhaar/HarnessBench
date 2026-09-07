@@ -1,6 +1,5 @@
 """Patch quality and code diff efficiency analyzer."""
 
-from typing import List, Optional
 from harnessbench.models import PatchQualityMetrics, PollutionReport
 
 

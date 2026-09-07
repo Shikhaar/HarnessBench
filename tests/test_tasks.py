@@ -1,6 +1,5 @@
 """Unit tests for task loading and validation logic."""
 
-from pathlib import Path
 from harnessbench.tasks import get_task_by_id, load_all_tasks, validate_task
 
 

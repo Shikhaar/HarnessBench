@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict
 from harnessbench.models import HarnessExecutionResult
 
 

@@ -1,8 +1,7 @@
 """Rich terminal leaderboard generation with statistical aggregation, awards, and external reference tables."""
 
-from typing import Dict, List, Optional
+from typing import List, Optional
 from rich.console import Console
-from rich.panel import Panel
 from rich.table import Table
 
 from harnessbench.datasets.models import BenchmarkRecord

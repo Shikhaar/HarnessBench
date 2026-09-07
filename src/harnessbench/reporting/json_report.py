@@ -1,11 +1,9 @@
 """JSON report exporter and statistical aggregator for cross-language benchmark runs."""
 
-import json
 import statistics
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-from harnessbench import __version__
+from typing import Dict, List, Optional
 from harnessbench.models import BenchmarkManifest, BenchmarkReport, RunResult
 
 

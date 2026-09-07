@@ -1,7 +1,6 @@
 """Scoring strategy architecture for HarnessBench."""
 
 from abc import ABC, abstractmethod
-from typing import Dict, List
 from harnessbench.models import RunResult
 
 

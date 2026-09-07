@@ -1,6 +1,6 @@
 """Markdown report generation for LEADERBOARD.md and results presentation."""
 
-from typing import Dict, List, Optional
+from typing import List, Optional
 from harnessbench.datasets.models import BenchmarkRecord
 from harnessbench.datasets.registry import load_all_external_records
 from harnessbench.models import BenchmarkManifest, RunResult

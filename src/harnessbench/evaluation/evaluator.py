@@ -1,7 +1,5 @@
 """Evaluation engine coordinating generic test suites, regressions, repo pollution, and patch quality."""
 
-from pathlib import Path
-from typing import Dict, List, Optional
 from harnessbench.evaluation.patch_quality import evaluate_patch_quality
 from harnessbench.evaluation.pollution import analyze_repository_pollution
 from harnessbench.evaluation.regression import check_regression

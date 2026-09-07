@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
-from harnessbench.models import BenchmarkManifest, BenchmarkReport, RunResult
+from harnessbench.models import BenchmarkManifest, BenchmarkReport
 
 DEFAULT_RESULTS_DIR = Path("results")
 DEFAULT_HISTORY_DIR = DEFAULT_RESULTS_DIR / "history"

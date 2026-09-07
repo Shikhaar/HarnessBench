@@ -1,8 +1,8 @@
 """Token extraction and aggregation from provider wire traffic across Anthropic and OpenAI APIs."""
 
 import json
-from typing import Any, Dict, Optional
-from pydantic import BaseModel, Field
+from typing import Any, Dict
+from pydantic import BaseModel
 
 
 class TokenRecord(BaseModel):

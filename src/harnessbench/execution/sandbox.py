@@ -1,6 +1,5 @@
 """Workspace sandbox manager for isolated Git-based execution environments."""
 
-import os
 import re
 import shutil
 import subprocess

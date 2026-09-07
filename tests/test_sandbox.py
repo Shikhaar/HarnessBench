@@ -1,6 +1,5 @@
 """Tests for git sandbox lifecycle and snapshotting."""
 
-import shutil
 from pathlib import Path
 from harnessbench.execution.sandbox import SandboxWorkspace
 

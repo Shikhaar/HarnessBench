@@ -1,11 +1,9 @@
 """FastAPI & httpx network interception proxy supporting Anthropic and OpenAI wire traffic."""
 
-import asyncio
 import json
 import os
 import threading
 import time
-from datetime import datetime
 from typing import Any, AsyncIterator, Dict, List, Optional
 
 import httpx

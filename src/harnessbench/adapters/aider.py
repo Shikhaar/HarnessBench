@@ -1,8 +1,7 @@
 """Aider coding agent adapter."""
 
-import shutil
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict
 from harnessbench.adapters.base import BaseHarnessAdapter
 from harnessbench.execution.process import run_command_safe
 from harnessbench.models import HarnessExecutionResult

@@ -1,12 +1,10 @@
 """Tests for network proxy parsing, SSE handling, and cost calculation."""
 
-import pytest
 from decimal import Decimal
 from fastapi.testclient import TestClient
-from harnessbench.telemetry.costs import PricingModel, calculate_api_cost, get_pricing_for_model
+from harnessbench.telemetry.costs import PricingModel, calculate_api_cost
 from harnessbench.telemetry.proxy import app
 from harnessbench.telemetry.tokens import (
-    TokenRecord,
     parse_anthropic_json_usage,
     parse_anthropic_sse_event,
 )

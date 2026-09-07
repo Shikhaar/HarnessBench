@@ -1,6 +1,5 @@
 """Repository pollution and hygiene analyzer."""
 
-from pathlib import Path
 from typing import List, Set
 from harnessbench.models import PollutionReport
 

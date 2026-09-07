@@ -1,14 +1,12 @@
 """Benchmark runner orchestrating cross-language sandboxes, adapters, proxies, and evaluation."""
 
-import json
-import os
 import platform
 import subprocess
 import sys
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Dict, Optional
 
 import httpx
 

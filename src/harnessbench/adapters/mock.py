@@ -1,8 +1,7 @@
 """Mock harness adapter for testing, validation, and dry-runs."""
 
-import os
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict
 from harnessbench.adapters.base import BaseHarnessAdapter
 from harnessbench.models import HarnessExecutionResult
 
