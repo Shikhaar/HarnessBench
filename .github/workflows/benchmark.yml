@@ -58,6 +58,9 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
+      - name: Set up Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
       - name: Install HarnessBench & Dependencies
         run: |
           python -m pip install --upgrade pip

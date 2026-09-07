@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-validate:
+    name: Run CI Test Suite & Task Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Set up Go 1.22
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Set up Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install HarnessBench & Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+
+      - name: Run Test Suite (Offline)
+        run: |
+          pytest -v
+
+      - name: Validate Benchmark Tasks Across Languages
+        run: |
+          harnessbench validate-tasks
+
+      - name: Verify Dataset Registry CLI
+        run: |
+          harnessbench dataset list
+
+      - name: Test Controlled Benchmark Execution (Mock Harness)
+        run: |
+          harnessbench run --harnesses mock --tasks all --repetitions 1
+
+      - name: Verify Isolated Compare CLI
+        run: |
+          harnessbench compare --source external
+          harnessbench compare --source harnessbench
