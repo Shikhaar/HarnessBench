@@ -1,13 +1,18 @@
 diff --git a/src/lib.rs b/src/lib.rs
+index e13316c..b201ade 100644
 --- a/src/lib.rs
 +++ b/src/lib.rs
-@@ -28,3 +28,2 @@ pub fn parse_server_config(raw: &str) -> Result<ServerConfig, ConfigError> {
+@@ -28,8 +28,7 @@ pub struct ServerConfig {
+ 
+ pub fn parse_server_config(raw: &str) -> Result<ServerConfig, ConfigError> {
      if raw.trim().is_empty() {
 -        // BUG: Inverted/wrong variant returned on empty payload
 -        return Err(ConfigError::MissingKey("payload".to_string()));
 +        return Err(ConfigError::EmptyPayload);
      }
-@@ -42,5 +41,7 @@ pub fn parse_server_config(raw: &str) -> Result<ServerConfig, ConfigError> {
+ 
+     let mut host = None;
+@@ -46,10 +45,11 @@ pub fn parse_server_config(raw: &str) -> Result<ServerConfig, ConfigError> {
              if key == "host" {
                  host = Some(val.to_string());
              } else if key == "port" {
@@ -20,3 +25,5 @@ diff --git a/src/lib.rs b/src/lib.rs
                  }
 +                port = Some(p);
              }
+         }
+     }

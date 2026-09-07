@@ -14,8 +14,9 @@ def test_end_to_end_benchmark_pipeline(tmp_path: Path):
     tasks = load_all_tasks()
     assert len(tasks) >= 3
 
-    # Run mock adapter on first task
-    task = tasks[0]
+    # Run mock adapter on first python task
+    python_tasks = [t for t in tasks if t.language == "python"]
+    task = python_tasks[0] if python_tasks else tasks[0]
     mock_adapter = MockAdapter(behavior="solve")
 
     output_dir = tmp_path / "results"

@@ -3,7 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-if shutil.which("go"):
+if shutil.which("go") and Path("go.mod").exists():
     res = subprocess.run(["go", "test", "./..."], capture_output=True, text=True)
     sys.exit(res.returncode)
 

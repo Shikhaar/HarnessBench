@@ -3,8 +3,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-# If go is in PATH, run full go test with race detector
-if shutil.which("go"):
+# If go is in PATH and go.mod exists, run full go test with race detector
+if shutil.which("go") and Path("go.mod").exists():
     res = subprocess.run(["go", "test", "-race", "./..."], capture_output=True, text=True)
     sys.exit(res.returncode)
 
