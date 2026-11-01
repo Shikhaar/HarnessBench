@@ -1,0 +1,16 @@
+{
+  "benchmark_version": "0.1.0",
+  "task_suite_version": "0.1.0",
+  "model": "claude-3-5-sonnet-20241022",
+  "provider": "anthropic",
+  "repetitions": 1,
+  "harnesses": {
+    "mock": "mock"
+  },
+  "environment": {
+    "os": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "python": "3.11.17"
+  },
+  "timestamp": "2026-11-01T05:30:05.093474",
+  "git_commit": "6a836e2cbf55992f173fec28539f8c2cc3a3afee"
+}

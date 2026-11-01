@@ -1,0 +1,133 @@
+{
+  "run_id": "mock_rust_error_handling_001_rep1_60b884",
+  "task_id": "rust_error_handling_001",
+  "harness": "mock",
+  "model": "claude-3-5-sonnet-20241022",
+  "language": "rust",
+  "category": "error_handling",
+  "repetition_index": 1,
+  "success": true,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cache_read_tokens": 0,
+  "total_tokens": 0,
+  "cost_usd": 0.0,
+  "cost_per_successful_task": null,
+  "tokens_per_successful_task": null,
+  "turn_count": null,
+  "duration_seconds": 1.2,
+  "time_to_first_api_request": null,
+  "files_changed": 1,
+  "lines_added": 5,
+  "lines_deleted": 5,
+  "unexpected_files": [
+    "Cargo.lock",
+    "target"
+  ],
+  "pollution_score": 2,
+  "patch_quality": {
+    "files_changed": 1,
+    "lines_added": 5,
+    "lines_deleted": 5,
+    "diff_size": 1133,
+    "unexpected_files": [
+      "Cargo.lock",
+      "target"
+    ],
+    "unrelated_modifications": [],
+    "quality_score": 0.7
+  },
+  "pre_existing_tests_passed": true,
+  "post_tests_passed": true,
+  "regression_detected": false,
+  "timeout": false,
+  "budget_exceeded": false,
+  "status": "passed",
+  "harness_exit_code": 0,
+  "evaluation_exit_code": 0,
+  "api_errors": 0,
+  "stdout": "Mock agent executed successfully.",
+  "stderr": "",
+  "git_diff": "diff --git a/src/lib.rs b/src/lib.rs\nindex e13316c..b201ade 100644\n--- a/src/lib.rs\n+++ b/src/lib.rs\n@@ -28,8 +28,7 @@ pub struct ServerConfig {\n \n pub fn parse_server_config(raw: &str) -> Result<ServerConfig, ConfigError> {\n     if raw.trim().is_empty() {\n-        // BUG: Inverted/wrong variant returned on empty payload\n-        return Err(ConfigError::MissingKey(\"payload\".to_string()));\n+        return Err(ConfigError::EmptyPayload);\n     }\n \n     let mut host = None;\n@@ -46,10 +45,11 @@ pub fn parse_server_config(raw: &str) -> Result<ServerConfig, ConfigError> {\n             if key == \"host\" {\n                 host = Some(val.to_string());\n             } else if key == \"port\" {\n-                if let Ok(p) = val.parse::<u16>() {\n-                    // BUG: Does not check p >= 1024, permits privileged/invalid ports\n-                    port = Some(p);\n+                let p = val.parse::<u16>().map_err(|_| ConfigError::InvalidPort(0))?;\n+                if p < 1024 {\n+                    return Err(ConfigError::InvalidPort(p));\n                 }\n+                port = Some(p);\n             }\n         }\n     }\n",
+  "git_status": " M src/lib.rs\n?? Cargo.lock\n?? target/\n",
+  "started_at": "2026-11-01T05:30:04.223744",
+  "completed_at": "2026-11-01T05:30:04.544402",
+  "harnessbench_version": "0.1.0",
+  "python_version": "3.11.17",
+  "os_info": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+  "git_commit": "6a836e2cbf55992f173fec28539f8c2cc3a3afee",
+  "extra_metadata": {
+    "events": [
+      {
+        "event_type": "run_started",
+        "timestamp": "2026-11-01T05:30:04.223748",
+        "run_id": "mock_rust_error_handling_001_rep1_60b884",
+        "data": {
+          "task_id": "rust_error_handling_001",
+          "harness": "mock",
+          "model": "claude-3-5-sonnet-20241022",
+          "repetition": 1
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-11-01T05:30:04.236263",
+        "run_id": "mock_rust_error_handling_001_rep1_60b884",
+        "data": {
+          "phase": "baseline"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-11-01T05:30:04.379295",
+        "run_id": "mock_rust_error_handling_001_rep1_60b884",
+        "data": {
+          "phase": "baseline",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "harness_started",
+        "timestamp": "2026-11-01T05:30:04.391776",
+        "run_id": "mock_rust_error_handling_001_rep1_60b884",
+        "data": {
+          "harness": "mock"
+        }
+      },
+      {
+        "event_type": "harness_finished",
+        "timestamp": "2026-11-01T05:30:04.393260",
+        "run_id": "mock_rust_error_handling_001_rep1_60b884",
+        "data": {
+          "exit_code": 0,
+          "duration": 1.2
+        }
+      },
+      {
+        "event_type": "tests_started",
+        "timestamp": "2026-11-01T05:30:04.404691",
+        "run_id": "mock_rust_error_handling_001_rep1_60b884",
+        "data": {
+          "phase": "post_evaluation"
+        }
+      },
+      {
+        "event_type": "tests_finished",
+        "timestamp": "2026-11-01T05:30:04.539950",
+        "run_id": "mock_rust_error_handling_001_rep1_60b884",
+        "data": {
+          "phase": "post_evaluation",
+          "passed": true
+        }
+      },
+      {
+        "event_type": "run_finished",
+        "timestamp": "2026-11-01T05:30:04.544406",
+        "run_id": "mock_rust_error_handling_001_rep1_60b884",
+        "data": {
+          "success": true
+        }
+      }
+    ]
+  }
+}
